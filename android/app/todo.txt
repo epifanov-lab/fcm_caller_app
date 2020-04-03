@@ -1,0 +1,40 @@
+### T O D O ###
+
+# CLIENT #
+- MainScreen flutter
+- CallSendScreen flutter
+- CallReceiveScreen native
+
+- java -> kotlin
+- FcmService data push parsing
+- dummy send data push 'refresh'
+- dummy send data push 'call'
+
+- user entity(token, name, color)
+- random user gen
+- dummy 'users' response
+
+- http client flutter
+- MethodChannel for commands from native
+
+- push on doze mode
+- handshake when receive call
+
+# BACKEND #
+- ...
+
+# FCM #
+- high-priority push
+
+# ELSE #
+- add crashlytics
+- label to ui flutter/native
+
+
+### D O N E ###
+
++ перенести со старого проекта
++ подключить к новому firebase
++ завести репо
++ сделать флоу-диаграмму архитектуры
++ прикрепить к гитхабовскому ридми
