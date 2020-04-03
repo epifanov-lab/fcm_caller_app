@@ -18,7 +18,7 @@
             android:value="@string/notification_channel_default_id" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".FlutterAppActivity"
             android:launchMode="singleTop"
             android:theme="@style/LaunchTheme"
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|smallestScreenSize|locale|layoutDirection|fontScale|screenLayout|density|uiMode"
@@ -31,7 +31,7 @@
 
             <meta-data
               android:name="io.flutter.embedding.android.SplashScreenDrawable"
-              android:resource="@drawable/launch_background" />
+              android:resource="@drawable/bcg_launch" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -50,7 +50,7 @@
             android:launchMode="singleInstance"/>
 
         <service
-            android:name=".FcmService"
+            android:name=".services.FcmService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -59,7 +59,7 @@
         </service>
 
         <service
-            android:name=".ForegroundService"
+            android:name=".services.ForegroundService"
             android:enabled="true"
             android:exported="true" />
 

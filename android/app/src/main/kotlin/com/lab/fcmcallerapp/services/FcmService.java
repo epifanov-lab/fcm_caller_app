@@ -1,8 +1,6 @@
-package com.lab.fcmcallerapp;
+package com.lab.fcmcallerapp.services;
 
-import android.content.ContentResolver;
 import android.content.Intent;
-import android.net.Uri;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;

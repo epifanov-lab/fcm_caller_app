@@ -6,22 +6,39 @@
     android:background="#333">
 
     <TextView
-        android:id="@+id/ring"
-        android:layout_width="wrap_content"
+        android:id="@+id/label_caller"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:layout_marginStart="176dp"
-        android:layout_marginTop="349dp"
-        android:layout_marginEnd="177dp"
-        android:layout_marginBottom="350dp"
-        android:text="CALL"
+        android:layout_marginTop="180dp"
+        android:text="Lorem Ipsum"
+        android:textAlignment="center"
         android:textColor="#fff"
         android:textSize="24dp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/label_call_receive"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="calls you"
+        android:textAlignment="center"
+        android:textColor="#fff"
+        android:textSize="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/label_caller" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="32dp"
+        android:layout_height="32dp"
+        android:background="@color/bcg_btn_answer"
+        android:src="@drawable/ic_call_answer" />
 
     <Button
         android:id="@+id/dismiss"
@@ -29,13 +46,13 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="74dp"
         android:layout_marginTop="128dp"
-        android:background="@color/bcgDismiss"
+        android:background="@color/bcg_btn_decline"
         android:padding="8dp"
         android:text="DISMISS"
         android:textColor="#fff"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ring" />
+        app:layout_constraintTop_toBottomOf="@+id/label_call_receive" />
 
     <Button
         android:id="@+id/answer"
@@ -43,12 +60,12 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="128dp"
         android:layout_marginEnd="68dp"
-        android:background="@color/bcgAnswer"
+        android:background="@color/bcg_btn_answer"
         android:padding="8dp"
         android:text="ANSWER"
         android:textColor="#fff"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ring" />
+        app:layout_constraintTop_toBottomOf="@+id/label_call_receive" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

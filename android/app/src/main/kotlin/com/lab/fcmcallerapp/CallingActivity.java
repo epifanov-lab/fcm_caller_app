@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.WindowManager;
 
 import com.google.firebase.iid.FirebaseInstanceId;
+import com.lab.fcmcallerapp.utils.Utils;
 
 public class CallingActivity extends Activity {
 
@@ -42,7 +43,7 @@ public class CallingActivity extends Activity {
   }
 
   private void answer() {
-    Utils.startActivity2(this, MainActivity.class);
+    Utils.startActivity2(this, FlutterAppActivity.class);
     dismiss();
   }
 

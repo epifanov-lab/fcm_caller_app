@@ -1,10 +1,13 @@
-package com.lab.fcmcallerapp;
+package com.lab.fcmcallerapp.utils;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+
+import com.lab.fcmcallerapp.R;
+import com.lab.fcmcallerapp.services.ForegroundService;
 
 /**
  * @author Konstantin Epifanov

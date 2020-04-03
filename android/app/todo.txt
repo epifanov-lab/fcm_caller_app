@@ -29,6 +29,7 @@
 # ELSE #
 - add crashlytics
 - label to ui flutter/native
+- on call receive animate something
 
 
 ### D O N E ###
