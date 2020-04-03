@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "341885630429",
+    "firebase_url": "https://fcm-caller-app.firebaseio.com",
+    "project_id": "fcm-caller-app",
+    "storage_bucket": "fcm-caller-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341885630429:android:f03bdbfc653d2c86bbe834",
+        "android_client_info": {
+          "package_name": "com.lab.fcmcallerapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341885630429-0mvbqshm5g5u7ugghb9n1ofpbggdcdhq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyANujcDW5pJPm9cTiwbS8xvecYdKT_Qw7U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341885630429-0mvbqshm5g5u7ugghb9n1ofpbggdcdhq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
