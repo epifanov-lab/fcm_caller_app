@@ -1,71 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#333">
+    android:background="@color/color_bcg_main">
 
     <TextView
-        android:id="@+id/label_caller"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:layout_marginTop="180dp"
-        android:text="Lorem Ipsum"
+        android:id="@+id/tv_caller"
+        android:layout_width="match_parent"
+        android:layout_height="43dp"
+        android:layout_marginTop="240dp"
+        android:gravity="center"
         android:textAlignment="center"
+        android:text="Lorem Ipsum"
         android:textColor="#fff"
-        android:textSize="24dp"
+        android:textSize="32dp"
         android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/label_call_receive"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/label_call_receive"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
         android:text="calls you"
+        android:gravity="center"
         android:textAlignment="center"
         android:textColor="#fff"
-        android:textSize="18dp"
+        android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_caller" />
+        app:layout_constraintTop_toBottomOf="@+id/tv_caller" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:layout_width="32dp"
-        android:layout_height="32dp"
-        android:background="@color/bcg_btn_answer"
-        android:src="@drawable/ic_call_answer" />
+        android:id="@+id/btn_dismiss"
+        android:layout_width="@dimen/circular_button_size"
+        android:layout_height="@dimen/circular_button_size"
+        android:layout_marginStart="64dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/bcg_call_dismiss"
+        android:src="@drawable/ic_call_dismiss"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
-        android:id="@+id/dismiss"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="74dp"
-        android:layout_marginTop="128dp"
-        android:background="@color/bcg_btn_decline"
-        android:padding="8dp"
-        android:text="DISMISS"
-        android:textColor="#fff"
-        android:textSize="20sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_call_receive" />
-
-    <Button
-        android:id="@+id/answer"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="128dp"
-        android:layout_marginEnd="68dp"
-        android:background="@color/bcg_btn_answer"
-        android:padding="8dp"
-        android:text="ANSWER"
-        android:textColor="#fff"
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/label_call_receive" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_answer"
+        android:layout_width="@dimen/circular_button_size"
+        android:layout_height="@dimen/circular_button_size"
+        android:layout_marginEnd="64dp"
+        android:layout_marginBottom="64dp"
+        android:background="@drawable/bcg_call_answer"
+        android:src="@drawable/ic_call_answer"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

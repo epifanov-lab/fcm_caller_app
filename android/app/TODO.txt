@@ -1,0 +1,68 @@
+###################
+##### T O D O #####
+
+## app client ##
+- MainScreen flutter
+- CallSendScreen flutter
+- CallReceiveScreen native
+
+- java -> kotlin
+- FcmService data push parsing
+- dummy send data push 'refresh'
+- dummy send data push 'call'
+
+- user entity(token, name, color)
+- random user generation
+- dummy 'users' response
+
+- http client flutter
+- MethodChannel for commands from native
+
+- add answer/dismiss buttons AwakeFgService tray notification
+- notification channels (call, refresh) with priority
+- push on doze mode
+- handshake when receive call
+
+## backend ##
+- ...
+
+## fcm ##
+- high-priority push
+
+## else ##
+- add crashlytics
+- label to ui flutter/native
+- on call receive animate something
+
+##### T O D O #####
+###################
+
+
+
+
+###################
+##### D O N E #####
+
++ перенести со старого проекта
++ подключить к новому firebase
++ завести репо
++ сделать флоу-диаграмму архитектуры
++ прикрепить к гитхабовскому ридми
+
+##### D O N E #####
+###################
+
+
+
+
+###############################
+##### C O D E T H R A S H #####
+
+    RemoteViews remote = new RemoteViews(getPackageName(), R.layout.notification_call);
+    remote.setTextViewText(R.id.title, intent.getStringExtra("title"));
+    remote.setTextViewText(R.id.message, intent.getStringExtra("body"));
+    remote.setOnClickPendingIntent(R.id.btn_dismiss, obtainIntent(this, CALL_DISMISS));
+    remote.setOnClickPendingIntent(R.id.btn_answer, obtainIntent(this, CALL_ANSWER));
+
+##### C O D E T H R A S H #####
+###############################

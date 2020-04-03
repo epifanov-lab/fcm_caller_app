@@ -8,10 +8,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowManager;
 
-import com.google.firebase.iid.FirebaseInstanceId;
-import com.lab.fcmcallerapp.utils.Utils;
+import com.lab.fcmcallerapp.utils.CommonUtils;
 
-public class CallingActivity extends Activity {
+public class CallReceiveActivity extends Activity {
 
   public static final String CALL_COMMAND_KEY = "command";
 
@@ -36,20 +35,20 @@ public class CallingActivity extends Activity {
 
     setContentView(R.layout.activity_caller);
 
-    findViewById(R.id.dismiss).setOnClickListener((v) -> dismiss());
-    findViewById(R.id.answer).setOnClickListener((v) -> answer());
+    findViewById(R.id.btn_dismiss).setOnClickListener((v) -> dismiss());
+    findViewById(R.id.btn_answer).setOnClickListener((v) -> answer());
 
-    getFcmToken();
-  }
-
-  private void answer() {
-    Utils.startActivity2(this, FlutterAppActivity.class);
-    dismiss();
+    CommonUtils.logCurrentFcmToken();
   }
 
   private void dismiss() {
-    Utils.stopForegroundService(this);
+    CommonUtils.stopForegroundService(this);
     finish();
+  }
+
+  private void answer() {
+    CommonUtils.startActivity(this, FlutterAppActivity.class);
+    dismiss();
   }
 
   @Override
@@ -63,20 +62,6 @@ public class CallingActivity extends Activity {
         default: break;
       }
     super.onNewIntent(intent);
-  }
-
-  private void getFcmToken() {
-    FirebaseInstanceId.getInstance().getInstanceId()
-      .addOnCompleteListener(task -> {
-        if (!task.isSuccessful()) {
-          System.out.println("CallingActivity getFcmToken - failed");
-          return;
-        }
-
-        // Get new Instance ID token
-        String token = task.getResult().getToken();
-        System.out.println("CallingActivity.getFcmToken: " + token);
-      });
   }
 
 }

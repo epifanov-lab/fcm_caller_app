@@ -46,7 +46,7 @@
 
         </activity>
 
-        <activity android:name=".CallingActivity"
+        <activity android:name=".CallReceiveActivity"
             android:launchMode="singleInstance"/>
 
         <service
@@ -59,7 +59,7 @@
         </service>
 
         <service
-            android:name=".services.ForegroundService"
+            android:name=".services.CallFgService"
             android:enabled="true"
             android:exported="true" />
 

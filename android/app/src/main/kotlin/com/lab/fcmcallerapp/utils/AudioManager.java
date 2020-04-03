@@ -7,7 +7,14 @@ import android.media.MediaPlayer;
  * @author Konstantin Epifanov
  * @since 28.02.2020
  */
-public class AudioPlayer {
+public class AudioManager {
+
+  private static AudioManager instance;
+
+  public static AudioManager get() {
+    if (instance == null) instance = new AudioManager();
+    return instance;
+  }
 
   private MediaPlayer mMediaPlayer;
 
