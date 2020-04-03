@@ -1,1 +1,1 @@
-![](resources/flow_chart_v1.jpg)
+![](resources/flow_chart_v2.png)
