@@ -1,1 +1,1 @@
-![alt text](https://github.com/epifanov-lab/fcm_caller_app/tree/master/resources/flow_chart_v1.jpg)
+![](resources/flow_chart_v1.jpg)
