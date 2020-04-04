@@ -6,7 +6,7 @@
 - java -> kotlin (services, activity, utils)
 - FcmService data push parsing
 -- onRefresh - send broadcast to FlutterActivity
--- onCall - start CallReceiveAct., put name
+-- onCall - start CallReceiveActivity, put name
 - CallFgService tray notification name, dismiss/answer
 - MethodChannel for commands from native
 -- transit dismiss/answer from CallReceiveActivity
@@ -19,9 +19,6 @@
 - CallSendScreen
 - dummy send data push 'refresh'
 - dummy send data push 'call'
-- user entity(token, name, color)
-- random user generation
-- stub 'users' response
 - http client flutter
 
 #### backend ####
@@ -56,6 +53,13 @@
 
 + CallReceiveScreen native
 
++ user entity(token, name, color)
++ random name generation
++ stub 'users' response
++ avatar widget
++ storage
+
+
 ##### D O N E #####
 ###################
 
@@ -65,11 +69,38 @@
 ###############################
 ##### C O D E T H R A S H #####
 
-    RemoteViews remote = new RemoteViews(getPackageName(), R.layout.notification_call);
-    remote.setTextViewText(R.id.title, intent.getStringExtra("title"));
-    remote.setTextViewText(R.id.message, intent.getStringExtra("body"));
-    remote.setOnClickPendingIntent(R.id.btn_dismiss, obtainIntent(this, CALL_DISMISS));
-    remote.setOnClickPendingIntent(R.id.btn_answer, obtainIntent(this, CALL_ANSWER));
+RemoteViews remote = new RemoteViews(getPackageName(), R.layout.notification_call);
+remote.setTextViewText(R.id.title, intent.getStringExtra("title"));
+remote.setTextViewText(R.id.message, intent.getStringExtra("body"));
+remote.setOnClickPendingIntent(R.id.btn_dismiss, obtainIntent(this, CALL_DISMISS));
+remote.setOnClickPendingIntent(R.id.btn_answer, obtainIntent(this, CALL_ANSWER));
+
+static final List<int> _textColors = [0xFFF44336, 0xFFe91e63, 0xFF9C27B0, 0xFF673AB7,
+  0xFF3F51B5, 0xFF2196F3, 0xFF03A9F4, 0xFF00BCD4, 0xFF009688,
+  0xFF4CAF50, 0xFF8BC34A, 0xFFFF9800, 0xFFFF5722, 0xFF607D8B];
+
+static final List<int> _bcgColors = _textColors
+    .map((color) => Color.alphaBlend(Colors.white70, Color(color)))
+    .map((color) => color.value)
+    .toList();
+
+ThemeData(
+    // Define the default brightness and colors.
+    brightness: Brightness.dark,
+    primaryColor: Colors.lightBlue[800],
+    accentColor: Colors.cyan[600],
+
+    // Define the default font family.
+    fontFamily: 'Georgia',
+
+    // Define the default TextTheme. Use this to specify the default
+    // text styling for headlines, titles, bodies of text, and more.
+    textTheme: TextTheme(
+      headline: TextStyle(fontSize: 72.0, fontWeight: FontWeight.bold),
+      title: TextStyle(fontSize: 36.0, fontStyle: FontStyle.italic),
+      body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
+    ),
+  )
 
 ##### C O D E T H R A S H #####
 ###############################

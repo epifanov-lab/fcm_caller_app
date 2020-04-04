@@ -1,4 +1,4 @@
-import 'package:fcmcallerapp/client/client.dart';
+import 'file:///C:/LAB/fcm_caller_app/lib/services/client/client.dart';
 
 class StubClient extends Client {
 

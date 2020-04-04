@@ -1,9 +1,11 @@
 import 'dart:math';
 
+import '../main.dart';
+
 class NamesGenerator {
   //TODO MOVE TO BACKEND
 
-  static const List<String> names = const [
+  static const List<String> _names = const [
     'Liam', 'Noah', 'William', 'James', 'Oliver', 'Benjamin', 'Elijah', 'Lucas',
     'Mason', 'Logan', 'Alexander', 'Ethan', 'Jacob', 'Michael', 'Daniel', 'Henry',
     'Jackson', 'Sebastian', 'Aiden', 'Matthew', 'Samuel', 'David', 'Joseph', 'Carter',
@@ -117,12 +119,11 @@ class NamesGenerator {
     'Randall', 'Benton', 'Coleman', 'Markus'
   ];
 
-  static final size = names.length;
+  static final size = _names.length;
 
-  static String get() {
-    Random rnd = Random();
-    var first = rnd.nextInt(size - 1);
-    var second = rnd.nextInt(size - 1);
-    return '${names[first]} ${names[second]}';
+  static String create() {
+    var first = random.nextInt(size - 1);
+    var second = random.nextInt(size - 1);
+    return '${_names[first]} ${_names[second]}';
   }
 }
