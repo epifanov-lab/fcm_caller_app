@@ -1,15 +1,9 @@
 import 'package:firebase_messaging/firebase_messaging.dart';
 
 class FcmService {
-  static FcmService _instance;
 
   final FirebaseMessaging _fcm = FirebaseMessaging();
   String token;
-
-  static FcmService get() {
-    if (_instance == null) _instance = FcmService();
-    return _instance;
-  }
 
   Future initialize() async {
     _fcm.requestNotificationPermissions(IosNotificationSettings(provisional: true));

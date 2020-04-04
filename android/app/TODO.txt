@@ -21,7 +21,7 @@
 - dummy send data push 'call'
 - user entity(token, name, color)
 - random user generation
-- dummy 'users' response
+- stub 'users' response
 - http client flutter
 
 #### backend ####

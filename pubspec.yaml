@@ -9,6 +9,8 @@ dependencies:
   flutter:
     sdk: flutter
   firebase_messaging: ^6.0.13
+  shared_preferences: ^0.5.6+1
+  rxdart: ^0.22.1
 
   #firebase_core: ^0.4.4+3
   #firebase_auth: ^0.15.5+3
