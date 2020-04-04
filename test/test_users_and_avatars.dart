@@ -1,7 +1,7 @@
 import 'package:fcmcallerapp/entities/user.dart';
 import 'package:flutter/material.dart';
 
-import '../test_utils.dart';
+import 'test_utils.dart';
 
 class TestUsersAndAvatars extends StatelessWidget {
   static final String title = 'users & avatars';

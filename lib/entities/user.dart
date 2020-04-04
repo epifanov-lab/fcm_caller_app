@@ -1,5 +1,6 @@
-import 'package:fcmcallerapp/main.dart';
 import 'package:fcmcallerapp/utils/names_generator.dart';
+
+import '../app.dart';
 
 class User {
 

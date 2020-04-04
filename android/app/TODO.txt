@@ -36,6 +36,8 @@
 -- send logs from flutter to native via MethodChannel
 - themes, styles, true dark mode
 
+- TODO НАЛАДЬ ГИТ ЧТО БЫ ПОКАЗЫВАЛ КОММИТЫ
+
 ##### T O D O #####
 ###################
 

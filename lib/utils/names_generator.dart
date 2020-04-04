@@ -1,6 +1,4 @@
-import 'dart:math';
-
-import '../main.dart';
+import '../app.dart';
 
 class NamesGenerator {
   //TODO MOVE TO BACKEND
