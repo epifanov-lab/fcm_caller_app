@@ -1,38 +1,43 @@
 ###################
 ##### T O D O #####
 
-## app client ##
-- MainScreen flutter
-- CallSendScreen flutter
-- CallReceiveScreen native
-
-- java -> kotlin
+#### app client ####
+## android ##
+- java -> kotlin (services, activity, utils)
 - FcmService data push parsing
+-- onRefresh - send broadcast to FlutterActivity
+-- onCall - start CallReceiveAct., put name
+- CallFgService tray notification name, dismiss/answer
+- MethodChannel for commands from native
+-- transit dismiss/answer from CallReceiveActivity
+-- refresh command from FcmService (broadcast receiver)
+- notification channels (call, refresh) with priority
+- awake after push even in doze mode
+- handshake when receive call (what if call notification is expired?)
+## flutter ##
+- MainScreen
+- CallSendScreen
 - dummy send data push 'refresh'
 - dummy send data push 'call'
-
 - user entity(token, name, color)
 - random user generation
 - dummy 'users' response
-
 - http client flutter
-- MethodChannel for commands from native
 
-- add answer/dismiss buttons AwakeFgService tray notification
-- notification channels (call, refresh) with priority
-- push on doze mode
-- handshake when receive call
+#### backend ####
+- ... how ???
+- api users, register(user), call(from, to)
+- api answer/dismiss/cancel(from, to)
+- erase bd
 
-## backend ##
-- ...
-
-## fcm ##
-- high-priority push
-
-## else ##
+#### else ####
 - add crashlytics
 - label to ui flutter/native
 - on call receive animate something
+- add native android LogUtil
+-- wrap it into flutter plugin
+-- send logs from flutter to native via MethodChannel
+- themes, styles, true dark mode
 
 ##### T O D O #####
 ###################
@@ -48,6 +53,8 @@
 + завести репо
 + сделать флоу-диаграмму архитектуры
 + прикрепить к гитхабовскому ридми
+
++ CallReceiveScreen native
 
 ##### D O N E #####
 ###################
