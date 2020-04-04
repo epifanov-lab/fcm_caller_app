@@ -1,28 +1,20 @@
 import 'package:fcmcallerapp/entities/user.dart';
-import 'package:flutter/material.dart';
 
 class TestUtils {
+
+  /* length 163 */
+  static const String DUMMY_TOKEN = 'cuwf27CBQYy-bEPVJyP3Xh:APA91bGmLEQhUA'
+      'AlY3uzSS7Mzb5NrTWp7VRCE6pIaRGe6iunJfc585TU1IA2S3uXkSycCGUMySBEly1_1y'
+      'BUw2WDnRdj75So78CyhBsmknPRiGtpixrtcnBWhn74gCTW2YobBIKnM40f';
+
   static List<User> getRandomUsers(int count) {
     List<User> result = List();
     for (int i = 0; i < count; i++)
-      result.add(User.generate('${dummyToken()}'));
+      result.add(User.generate('$DUMMY_TOKEN'));
     return result;
   }
 
-  static List<Widget> getUserTextWidgetsList(List<User> users) {
-    List<Widget> result = List();
-    users.forEach((user) {
-      var style = TextStyle(color: Color(user.color));
-      var widget = Text(user.name, style: style);
-      result.add(widget);
-    });
-    return result;
-  }
-
-  static String dummyToken() {
-    return 'token'; //todo
+  static String generateDummyToken() {
+    return 'todo';
   }
 }
-// result.add(Text(user.name, style: TextStyle(color: Color(user.color))));
-// 163 chars
-// cuwf27CBQYy-bEPVJyP3Xh:APA91bGmLEQhUAAlY3uzSS7Mzb5NrTWp7VRCE6pIaRGe6iunJfc585TU1IA2S3uXkSycCGUMySBEly1_1yBUw2WDnRdj75So78CyhBsmknPRiGtpixrtcnBWhn74gCTW2YobBIKnM40f
