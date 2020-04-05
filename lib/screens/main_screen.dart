@@ -15,8 +15,8 @@ class MainScreen extends StatefulWidget {
 
 class _MainScreenState extends State<MainScreen> {
 
-  User user = STUB_USER;
-  List<User> allUsers = List();
+  User _user = STUB_USER;
+  List<User> _allUsers = List();
 
   @override
   void initState() {
@@ -30,11 +30,11 @@ class _MainScreenState extends State<MainScreen> {
         .then((token) {
           print('@@@@@ f.FcmService TOKEN: $token');
           if (storage.get('user') == null) {
-            setState(() => user = User.generate(token));
-            storage.set('user', user.toJson());
-            return client.register(user);
+            setState(() => _user = User.generate(token));
+            storage.set('user', _user.toJson());
+            return client.register(_user);
           } else {
-            setState(() => user = User.fromJson(json.decode(storage.get('user'))));
+            setState(() => _user = User.fromJson(json.decode(storage.get('user'))));
             return Future.value(null);
           }
         });
@@ -42,63 +42,64 @@ class _MainScreenState extends State<MainScreen> {
 
   Future updateAllUsers() {
     return client.users().then((users) {
-      if (users.isEmpty) users..add(user)..add(STUB_USER);
-      else if (users.length == 1 && users.contains(user)) users.add(STUB_USER);
+      if (users.isEmpty) users..add(_user)..add(STUB_USER);
+      else if (users.length == 1 && users.contains(_user)) users.add(STUB_USER);
       else {
-        if (users.indexOf(user) >= 0) users..remove(user)..insert(0, user);
+        if (users.indexOf(_user) >= 0) users..remove(_user)..insert(0, _user);
         else users.insert(0, STUB_USER);
       }
-      setState(() => allUsers = users);
+      setState(() => _allUsers = users);
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    print('build: ${allUsers.length}');
+    print('build: ${_allUsers.length}');
     return Scaffold(
       appBar: AppBar(title: Text('FCM-CALLER-APP')),
       body: Center(
-        child: ListView.builder(
+        child: ListView.separated(
           physics: BouncingScrollPhysics(),
-          itemCount: allUsers.length,
-          itemBuilder: (BuildContext context, int index) {
-            User current = allUsers[index];
-            return index == 0 ? ownInfoBlock(current) : getUserWidget(current);
-          },
+          itemCount: _allUsers.length,
+          itemBuilder: (context, index) =>
+                        index == 0 ? ownInfoBlock() : getUserWidget(_allUsers[index]),
+          separatorBuilder: (context, index) => SizedBox(height: 16),
     ),),);
   }
   
-  Widget ownInfoBlock(User user) {
+  Widget ownInfoBlock() {
     return Container(
-      padding: EdgeInsets.fromLTRB(32, 32, 32, 0),
+      padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-            AvatarWidget(user.name, 64),
+            AvatarWidget(_user.name, 64),
             SizedBox(height: 16),
-            Text(user != STUB_USER ? user.name : '... ...',
+            Text(_user != STUB_USER ? _user.name : '... ...',
                 style: appTheme.textTheme.headline1),
             SizedBox(height: 32),
-            Text('Tap to call:', style: appTheme.textTheme.subtitle1)
+            Text('нажмите для вызова:', style: appTheme.textTheme.subtitle1)
         ],
       ),
     );
   }
 
   Widget getUserWidget(User user) {
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 8.0),
-      child: user != STUB_USER ? Row(children: <Widget>[
-        AvatarWidget(user.name, 48),
-        SizedBox(width: 16),
-        Text(user.name, style: appTheme.textTheme.headline2,)],
-      ) : contactsStub(),
-    );
+    return user == STUB_USER ? contactsStub() :
+        InkWell(
+          onTap: () => Navigator.pushNamed(context, '/call', arguments: user),
+          child: Row(children: <Widget>[
+            SizedBox(width: 16),
+            AvatarWidget(user.name, 48),
+            SizedBox(width: 16),
+            Text(user.name, style: appTheme.textTheme.headline2,)],
+          ),
+        );
   }
 
   Widget contactsStub() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 16, vertical: 0),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Text(
           'Список доступных для звонка контактов пуст. '
           'Установите приложение на другие устройства. '

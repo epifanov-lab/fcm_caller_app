@@ -20,7 +20,7 @@ class TestUsersAndAvatars extends StatelessWidget {
     List<User> users = StubClient.getRandomUsers(count);
     return Center(
       child: ListView(
-          padding: EdgeInsets.all(16),
+          padding: const EdgeInsets.all(16),
           children: getUserTextWidgetsList(users),
       ),
     );

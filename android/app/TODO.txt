@@ -21,14 +21,15 @@
 - handshake when receive call (what if call notification is expired?)
 
 ## flutter ##
-- MainScreen
++ MainScreen
 - router
-- user call ic
 - refresh event
--- avatar stub
--- contacts stub
++ avatar stub
++ contacts stub
 
-- CallSendScreen
++ CallSendScreen
+-- стиль появиления
+-- анимация
 
 - dummy send data push 'refresh'
 - dummy send data push 'call'

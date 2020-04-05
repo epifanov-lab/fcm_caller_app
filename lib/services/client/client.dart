@@ -7,5 +7,4 @@ abstract class AppClient {
   Future callSendCancel(User from, User to);
   Future callReceiveDismiss(User from, User to);
   Future callReceiveAnswer(User from, User to);
-  Future dbErase();
 }

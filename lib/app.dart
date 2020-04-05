@@ -1,5 +1,6 @@
 import 'dart:math';
 
+import 'package:fcmcallerapp/screens/call_send_screen.dart';
 import 'package:flutter/material.dart';
 
 import 'file:///C:/LAB/fcm_caller_app/lib/services/client/client.dart';
@@ -26,9 +27,6 @@ Widget build(BuildContext context) {
 }
 
 class FcmCallerApp extends StatefulWidget {
-  final Widget _startScreenWidget;
-  FcmCallerApp(this._startScreenWidget);
-
   @override
   _FcmCallerAppState createState() => _FcmCallerAppState();
 }
@@ -40,7 +38,11 @@ class _FcmCallerAppState extends State<FcmCallerApp> {
     return MaterialApp(
       title: 'fcm-caller-app',
       theme: appTheme,
-      home: widget._startScreenWidget,
+      initialRoute: '/',
+      routes: {
+        '/': (context) => MainScreen(),
+        '/call': (context) => CallSendScreen()
+      },
       debugShowCheckedModeBanner: false,
     );
   }

@@ -47,7 +47,4 @@ class StubClient extends AppClient {
   Future callSendCancel(User from, User to)
     => Future.value({});
 
-  @override
-  Future dbErase() => Future.value({});
-
 }
