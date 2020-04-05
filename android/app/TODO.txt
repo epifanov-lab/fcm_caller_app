@@ -2,23 +2,37 @@
 ##### T O D O #####
 
 #### app client ####
+
 ## android ##
 - java -> kotlin (services, activity, utils)
+
 - FcmService data push parsing
 -- onRefresh - send broadcast to FlutterActivity
 -- onCall - start CallReceiveActivity, put name
+
 - CallFgService tray notification name, dismiss/answer
+
 - MethodChannel for commands from native
 -- transit dismiss/answer from CallReceiveActivity
 -- refresh command from FcmService (broadcast receiver)
+
 - notification channels (call, refresh) with priority
 - awake after push even in doze mode
 - handshake when receive call (what if call notification is expired?)
+
 ## flutter ##
 - MainScreen
+- router
+- user call ic
+- refresh event
+-- avatar stub
+-- contacts stub
+
 - CallSendScreen
+
 - dummy send data push 'refresh'
 - dummy send data push 'call'
+
 - http client flutter
 
 #### backend ####
@@ -26,6 +40,8 @@
 - api users, register(user), call(from, to)
 - api answer/dismiss/cancel(from, to)
 - erase bd
+
+-- after register don't send push refresh to just registred
 
 #### else ####
 - add crashlytics
@@ -103,6 +119,19 @@ ThemeData(
       body1: TextStyle(fontSize: 14.0, fontFamily: 'Hind'),
     ),
   )
+
+/*
+SizedBox(height: 32),
+user == null ? ownStub() : ownInfoBlock(user),
+SizedBox(height: 32),
+haveContacts() ? contactsStub() : contactsBlock(contacts)
+
+  List<Widget> contactsBlock(List<User> contacts) {
+  List<Widget> result = List();
+  contacts.forEach((user) => result.add(getContactWidget(user)));
+  return result;
+}
+*/
 
 ##### C O D E T H R A S H #####
 ###############################

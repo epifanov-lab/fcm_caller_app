@@ -1,6 +1,8 @@
+import 'dart:convert';
+
 import 'package:fcmcallerapp/utils/names_generator.dart';
 
-import '../app.dart';
+const User STUB_USER = const User.stub();
 
 class User {
 
@@ -14,5 +16,13 @@ class User {
 
   User.fromJson(Map<String, dynamic> json)
       : this._(json['token'], json['name']);
+
+  const User.stub() : token = 'stub', name = 'stub';
+
+  String toJson() => json.encode({'token': token, 'name': name});
+  @override
+  String toString() {
+    return 'User{name: $name}';
+  }
 
 }

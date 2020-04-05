@@ -1,27 +1,50 @@
-import 'file:///C:/LAB/fcm_caller_app/lib/services/client/client.dart';
+import 'package:fcmcallerapp/entities/user.dart';
 
-class StubClient extends Client {
+import 'client.dart';
+
+class StubClient extends AppClient {
+
+  static User _user;
+
+  static const String DUMMY_TOKEN = 'cuwf27CBQYy-bEPVJyP3Xh:APA91bGmLEQhUA'
+      'AlY3uzSS7Mzb5NrTWp7VRCE6pIaRGe6iunJfc585TU1IA2S3uXkSycCGUMySBEly1_1y'
+      'BUw2WDnRdj75So78CyhBsmknPRiGtpixrtcnBWhn74gCTW2YobBIKnM40f';
+
+  static List<User> getRandomUsers(int count) {
+    List<User> result = List();
+    for (int i = 0; i < count; i++) {
+      var user = i == 0 ? _user??STUB_USER : User.generate('$DUMMY_TOKEN');
+      print('@@@@@ getRandomUsers: $user');
+      result.add(user);
+    }
+    return result;
+  }
 
   @override
-  Future users() => Future.value({});
+  Future<List<User>> users()
+    => Future.value(getRandomUsers(10));
 
   @override
-  Future register(Map<String, dynamic> user) => Future.value({});
+  Future register(User user) {
+    print('@@@@@ register: $user');
+    _user = user;
+    return Future.value({});
+  }
 
   @override
-  Future call(Map<String, dynamic> from, Map<String, dynamic> to)
+  Future call(User from, User to)
     => Future.value({});
 
   @override
-  Future callReceiveAnswer(Map<String, dynamic> from, Map<String, dynamic> to)
+  Future callReceiveAnswer(User from, User to)
     => Future.value({});
 
   @override
-  Future callReceiveDismiss(Map<String, dynamic> from, Map<String, dynamic> to)
+  Future callReceiveDismiss(User from, User to)
     => Future.value({});
 
   @override
-  Future callSendCancel(Map<String, dynamic> from, Map<String, dynamic> to)
+  Future callSendCancel(User from, User to)
     => Future.value({});
 
   @override

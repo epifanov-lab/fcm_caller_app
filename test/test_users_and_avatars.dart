@@ -1,9 +1,9 @@
 import 'package:fcmcallerapp/app.dart';
 import 'package:fcmcallerapp/entities/user.dart';
+import 'package:fcmcallerapp/services/client/stub_client.dart';
+import 'package:fcmcallerapp/theme.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/material.dart';
-
-import 'test_utils.dart';
 
 class TestUsersAndAvatars extends StatelessWidget {
   static final String title = 'users & avatars';
@@ -17,7 +17,7 @@ class TestUsersAndAvatars extends StatelessWidget {
   }
 
   Center testUsersAndAvatars(int count) {
-    List<User> users = TestUtils.getRandomUsers(count);
+    List<User> users = StubClient.getRandomUsers(count);
     return Center(
       child: ListView(
           padding: EdgeInsets.all(16),
@@ -39,7 +39,7 @@ class TestUsersAndAvatars extends StatelessWidget {
     return Row(children: <Widget>[
       AvatarWidget(user.name, 36),
       SizedBox(width: 16),
-      Text(user.name, style: Style.appTheme.textTheme.headline2,)],
+      Text(user.name, style: appTheme.textTheme.headline2,)],
     );
   }
 
