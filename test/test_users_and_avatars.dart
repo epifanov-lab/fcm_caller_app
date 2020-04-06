@@ -1,6 +1,5 @@
-import 'package:fcmcallerapp/app.dart';
 import 'package:fcmcallerapp/entities/user.dart';
-import 'package:fcmcallerapp/services/client/stub_client.dart';
+import 'package:fcmcallerapp/services/client.dart';
 import 'package:fcmcallerapp/theme.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/material.dart';

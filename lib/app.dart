@@ -1,19 +1,18 @@
 import 'dart:math';
 
 import 'package:fcmcallerapp/screens/call_send_screen.dart';
+import 'package:fcmcallerapp/services/client.dart';
 import 'package:flutter/material.dart';
 
-import 'file:///C:/LAB/fcm_caller_app/lib/services/client/client.dart';
-import 'file:///C:/LAB/fcm_caller_app/lib/services/client/stub_client.dart';
 import 'file:///C:/LAB/fcm_caller_app/lib/services/storage.dart';
 
 import 'screens/main_screen.dart';
-import 'services/fcm_service.dart';
+import 'services/firebase_service.dart';
 import 'theme.dart';
 
 Random random = Random();
-FcmService fcmService = FcmService();
-AppClient client = StubClient();
+FirebaseService fcmService = FirebaseService();
+RestApi client = fcmService;
 Storage storage = TemporaryStorage();
 
 @override

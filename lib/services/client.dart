@@ -1,14 +1,22 @@
 import 'package:fcmcallerapp/entities/user.dart';
 
-import 'client.dart';
+abstract class RestApi {
+  Future<List<User>> users();
+  Future register(User user);
+  Future call(User from, User to);
+  Future callAll();
+  Future callSendCancel(User from, User to);
+  Future callReceiveDismiss(User from, User to);
+  Future callReceiveAnswer(User from, User to);
+}
 
-class StubClient extends AppClient {
-
-  static User _user;
+class StubClient extends RestApi {
 
   static const String DUMMY_TOKEN = 'cuwf27CBQYy-bEPVJyP3Xh:APA91bGmLEQhUA'
       'AlY3uzSS7Mzb5NrTWp7VRCE6pIaRGe6iunJfc585TU1IA2S3uXkSycCGUMySBEly1_1y'
       'BUw2WDnRdj75So78CyhBsmknPRiGtpixrtcnBWhn74gCTW2YobBIKnM40f';
+
+  static User _user;
 
   static List<User> getRandomUsers(int count) {
     List<User> result = List();
@@ -22,7 +30,7 @@ class StubClient extends AppClient {
 
   @override
   Future<List<User>> users()
-    => Future.value(getRandomUsers(10));
+  => Future.value(getRandomUsers(10));
 
   @override
   Future register(User user) {
@@ -33,18 +41,22 @@ class StubClient extends AppClient {
 
   @override
   Future call(User from, User to)
-    => Future.value({});
+  => Future.value({});
+
+  @override
+  Future callAll()
+  => Future.value({});
 
   @override
   Future callReceiveAnswer(User from, User to)
-    => Future.value({});
+  => Future.value({});
 
   @override
   Future callReceiveDismiss(User from, User to)
-    => Future.value({});
+  => Future.value({});
 
   @override
   Future callSendCancel(User from, User to)
-    => Future.value({});
+  => Future.value({});
 
 }

@@ -64,23 +64,32 @@ class _MainScreenState extends State<MainScreen> {
             itemCount: _allUsers.length,
             itemBuilder: (context, index) =>
                           index == 0 ? ownInfoBlock() : getUserWidget(_allUsers[index]),
-            separatorBuilder: (context, index) => SizedBox(height: 16),
-    ),),
+            separatorBuilder: (context, index) {
+              return index == 0 ? Container(
+                child: Column(
+                  children: <Widget>[
+                    SizedBox(height: 16),
+                    Text('Контакты:', style: appTheme.textTheme.subtitle1)
+                  ],
+                ),
+              ) : SizedBox(height: 16);
+            },
+        ),),
       ),);
   }
   
   Widget ownInfoBlock() {
-    return Container(
-      padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
+    return InkWell(
+      onTap: () => client.callAll(),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-            AvatarWidget(_user.name, 64),
+          SizedBox(height: 32),
+          AvatarWidget(_user.name, 64),
             SizedBox(height: 16),
             Text(_user != STUB_USER ? _user.name : '... ...',
                 style: appTheme.textTheme.headline1),
             SizedBox(height: 32),
-            Text('нажмите для вызова:', style: appTheme.textTheme.subtitle1)
         ],
       ),
     );

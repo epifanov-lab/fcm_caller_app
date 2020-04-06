@@ -38,6 +38,8 @@
 - http client flutter
 
 #### backend ####
+- нах бэкенд? Firestore
+
 - ... how ???
 - api users, register(user), call(from, to)
 - api answer/dismiss/cancel(from, to)

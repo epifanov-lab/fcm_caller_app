@@ -68,18 +68,20 @@ class _CallSendScreenState extends State<CallSendScreen>
                   ),
                 ),
               ),
-              InkWell(
-                onTap: () => Navigator.pop(context),
-                child: Container(
-                  width: 56, height: 56,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: Colors.red
+              Padding(
+                padding: const EdgeInsets.only(bottom: 32),
+                child: InkWell(
+                  onTap: () => Navigator.pop(context),
+                  child: Container(
+                    width: 56, height: 56,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: Colors.red
+                    ),
+                    child: Image.asset(
+                        'assets/icons/ic_call_end.png',
+                        scale: 1.5, color: Colors.white),
                   ),
-                  child: Image.asset(
-                      'assets/icons/ic_call_end.png',
-                      scale: 1.5, color: Colors.white),
-                  margin: EdgeInsets.all(32),
                 ),
               ),
             ],
