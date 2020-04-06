@@ -28,8 +28,9 @@
 + contacts stub
 
 + CallSendScreen
--- стиль появиления
--- анимация
+-- стиль появиления экрана
+-- анимированный перенос выбранного контакта
++ анимация звонка
 
 - dummy send data push 'refresh'
 - dummy send data push 'call'

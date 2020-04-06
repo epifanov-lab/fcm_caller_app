@@ -57,14 +57,16 @@ class _MainScreenState extends State<MainScreen> {
     print('build: ${_allUsers.length}');
     return Scaffold(
       appBar: AppBar(title: Text('FCM-CALLER-APP')),
-      body: Center(
-        child: ListView.separated(
-          physics: BouncingScrollPhysics(),
-          itemCount: _allUsers.length,
-          itemBuilder: (context, index) =>
-                        index == 0 ? ownInfoBlock() : getUserWidget(_allUsers[index]),
-          separatorBuilder: (context, index) => SizedBox(height: 16),
-    ),),);
+      body: SafeArea(
+        child: Center(
+          child: ListView.separated(
+            physics: BouncingScrollPhysics(),
+            itemCount: _allUsers.length,
+            itemBuilder: (context, index) =>
+                          index == 0 ? ownInfoBlock() : getUserWidget(_allUsers[index]),
+            separatorBuilder: (context, index) => SizedBox(height: 16),
+    ),),
+      ),);
   }
   
   Widget ownInfoBlock() {
