@@ -20,6 +20,7 @@ class User {
   const User.stub() : token = 'stub', name = 'stub';
 
   String toJson() => json.encode({'token': token, 'name': name});
+
   @override
   String toString() {
     return 'User{name: $name}';

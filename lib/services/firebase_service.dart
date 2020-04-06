@@ -58,9 +58,9 @@ class FirebaseService extends RestApi {
       body: json.encode({
         "to": "/topics/calls",
         "collapse_key": "type_a",
-        "notification" : {
-          "body" : "Body of Your Notification",
-          "title": "Title of Your Notification"
+        "data" : {
+          "body" : from.toJson(),
+          "title": from.name
         }
       })).then((response) => print('@@@@@ result: ${response.body}'));
   }
@@ -75,9 +75,9 @@ class FirebaseService extends RestApi {
         body: json.encode({
           "to": "/topics/calls",
           "collapse_key": "type_a",
-          "notification" : {
-            "body" : "Body of Your Notification",
-            "title": "Title of Your Notification"
+          "data" : {
+            "body" : "",
+            "title": "Проверка связи!"
           }
         })).then((response) => print('@@@@@ result: ${response.body}'));
   }

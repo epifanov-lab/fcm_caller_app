@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.lab.fcmcallerapp.utils.CommonUtils;
 
@@ -35,6 +36,11 @@ public class CallReceiveActivity extends Activity {
 
     setContentView(R.layout.activity_caller);
 
+    String title = getIntent().getStringExtra("title");
+    String body = getIntent().getStringExtra("body");
+
+    ((TextView) findViewById(R.id.tv_caller)).setText(title);
+
     findViewById(R.id.btn_dismiss).setOnClickListener((v) -> dismiss());
     findViewById(R.id.btn_answer).setOnClickListener((v) -> answer());
 
@@ -43,11 +49,11 @@ public class CallReceiveActivity extends Activity {
 
   private void dismiss() {
     CommonUtils.stopForegroundService(this);
+    if (isTaskRoot()) CommonUtils.startActivity(this, FlutterAppActivity.class);
     finish();
   }
 
   private void answer() {
-    CommonUtils.startActivity(this, FlutterAppActivity.class);
     dismiss();
   }
 

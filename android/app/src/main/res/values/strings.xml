@@ -1,4 +1,3 @@
 <resources>
-    <string name="notification_channel_default_id">default</string>
-    <string name="notification_channel_special_id">special</string>
+    <string name="notification_channel_calls">calls</string>
 </resources>
