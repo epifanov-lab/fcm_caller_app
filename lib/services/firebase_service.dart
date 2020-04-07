@@ -11,7 +11,8 @@ class FirebaseService extends RestApi {
   static const String FCM_SERVER_KEY = 'key=AAAAT5n4t90:APA91bFNmsK2qzPc7S-4qF3Ao3fpEUfeEBRLCntF9SFqCC1Gmwgtd-4_oI4uFiHf2JigcwD80toMLWd_Kq36fk6mGhD5_xvDzjv16xcrwstaICnn-GAh_MZtJmrD3XKBxYMP7HGlBgu3';
 
   final FirebaseMessaging _fcm = FirebaseMessaging();
-  final Firestore _firestore = Firestore.instance;
+  final Firestore _firestore = Firestore.instance
+                                  ..settings(persistenceEnabled: false);
 
   Future<String> initialize() async {
     _fcm.requestNotificationPermissions(IosNotificationSettings(provisional: true));
@@ -44,8 +45,8 @@ class FirebaseService extends RestApi {
           print('@@@@@ FS: getUsers.result: ${documents.length}');
           List<User> result = List();
           documents.forEach((document) {
-            print('@@@@@ FS: getUsers.result: ${document.data}');
             var user = User.fromSnapshot(document);
+            print('@@@@@ FS: getUsers.result: ${user.name}');
             result.add(user);
           });
           return result;
