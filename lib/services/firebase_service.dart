@@ -36,6 +36,7 @@ class FirebaseService extends RestApi {
     return _fcm.getToken();
   }
 
+  //TODO переписать на stream.listem. У дарта проблемы с Future.
   @override
   Future<List<User>> getUsers() {
     print('@@@@@ FS: getUsers');
@@ -69,13 +70,13 @@ class FirebaseService extends RestApi {
         'Authorization': FCM_SERVER_KEY,
         'Content-Type': 'application/json'},
       body: json.encode({
-        "to": "/topics/calls",
-        "collapse_key": "type_a",
-        "data" : {
-          "body" : from.toJson(),
-          "title": from.name
+        'token': '${to.token}',
+        'data' : {
+          'body' : from.toJson(),
+          'title': from.name
         }
-      })).then((response) => print('@@@@@ result: ${response.body}'));
+      })).then((response) => print('@@@@@ result: ${response.body}'))
+         .catchError((error) => print('@@@@@ error: $error'));
   }
 
   @override

@@ -72,6 +72,7 @@ class _MainScreenState extends State<MainScreen> {
       ),);
   }
 
+  //TODO: StreamBuilder _firestore.collection('users').snapshots().listen(...)
   Center _widgetUsersList() {
     return Center(
             child: ListView.separated(
@@ -105,7 +106,10 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _widgetTopUser() {
     return InkWell(
-      onTap: () => client.callAll(),
+      onTap: () {
+        return client.call(_user, _user)
+            .then((_) => Navigator.pushNamed(context, '/call', arguments: _user));
+      },
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
@@ -123,7 +127,10 @@ class _MainScreenState extends State<MainScreen> {
   Widget _widgetUserContact(User user) {
     return user == STUB_USER ? _widgetStubContact() :
         InkWell(
-          onTap: () => Navigator.pushNamed(context, '/call', arguments: user),
+          onTap: () {
+            return client.call(_user, user)
+                .then((_) => Navigator.pushNamed(context, '/call', arguments: user));
+          },
           child: Row(children: <Widget>[
             SizedBox(width: 16),
             AvatarWidget(user.name, 48),
