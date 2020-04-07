@@ -137,5 +137,34 @@ haveContacts() ? contactsStub() : contactsBlock(contacts)
 }
 */
 
+  //TODO: переписать на RxDart
+  Future updateUser() async {
+    return fcmService.initialize()
+        .then((token) {
+          print('@@@@@ f.FcmService TOKEN: $token');
+          if (storage.get('user') == null) {
+            setState(() => _user = User.generate(token));
+            storage.set('user', _user.toJson());
+            return client.register(_user);
+          } else {
+            setState(() => _user = User.fromJson(json.decode(storage.get('user'))));
+            return Future.value(null);
+          }
+        });
+  }
+
+  Future updateAllUsers() {
+    return client.getUsers().then((users) {
+      if (users.isEmpty) users..add(_user)..add(STUB_USER);
+      else if (users.length == 1 && users.contains(_user)) users.add(STUB_USER);
+      else {
+        if (users.indexOf(_user) >= 0) users..remove(_user)..insert(0, _user);
+        else users.insert(0, STUB_USER);
+      }
+      setState(() => _allUsers = users);
+    });
+  }
+
+
 ##### C O D E T H R A S H #####
 ###############################

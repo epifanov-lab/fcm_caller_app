@@ -13,8 +13,6 @@ class FirebaseService extends RestApi {
   final FirebaseMessaging _fcm = FirebaseMessaging();
   final Firestore _firestore = Firestore.instance;
 
-  User _localTestUser = STUB_USER;
-
   Future<String> initialize() async {
     _fcm.requestNotificationPermissions(IosNotificationSettings(provisional: true));
     _fcm.subscribeToTopic('calls');
@@ -38,19 +36,33 @@ class FirebaseService extends RestApi {
   }
 
   @override
-  Future<List<User>> users() {
-    // todo get from firestore
-    return Future.value(List()..add(_localTestUser));
+  Future<List<User>> getUsers() {
+    print('@@@@@ FS: getUsers');
+    return _firestore.collection('users').snapshots().first
+        .then((snapshot) => snapshot.documents)
+        .then((documents) {
+          print('@@@@@ FS: getUsers.result: ${documents.length}');
+          List<User> result = List();
+          documents.forEach((document) {
+            print('@@@@@ FS: getUsers.result: ${document.data}');
+            var user = User.fromSnapshot(document);
+            result.add(user);
+          });
+          return result;
+    });
   }
 
   @override
-  Future<void> register(User user) {
-    // todo put to firestore
-    _localTestUser = user;
+  Future<User> register(User user) {
+    print('@@@@@ FS: register $user');
+    return _firestore.collection('users')
+        .add(json.decode(user.toJson()))
+              .then((docref) => user);
   }
 
   @override
   Future call(User from, User to) {
+    print('@@@@@ FS: call \nfrom:$from\nto:$to');
     return http.post('https://fcm.googleapis.com/fcm/send',
       headers: {
         'Authorization': FCM_SERVER_KEY,
@@ -67,7 +79,7 @@ class FirebaseService extends RestApi {
 
   @override
   Future callAll() {
-    print('@@@@@ callAll');
+    print('@@@@@ FS: callAll');
     return http.post('https://fcm.googleapis.com/fcm/send',
         headers: {
           'Authorization': FCM_SERVER_KEY,
@@ -84,17 +96,17 @@ class FirebaseService extends RestApi {
 
   @override
   Future callReceiveAnswer(User from, User to) {
-
+    print('@@@@@ FS: callReceiveAnswer');
   }
 
   @override
   Future callReceiveDismiss(User from, User to) {
-
+    print('@@@@@ FS: callReceiveDismiss');
   }
 
   @override
   Future callSendCancel(User from, User to) {
-
+    print('@@@@@ FS: callSendCancel');
   }
 
 }

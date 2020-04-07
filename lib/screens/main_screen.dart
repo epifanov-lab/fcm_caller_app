@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:fcmcallerapp/entities/user.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/cupertino.dart';
@@ -20,36 +18,38 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    updateUser().then((_) => updateAllUsers());
+    updateUsers();
     super.initState();
   }
 
-  //TODO: переписать на RxDart
-  Future updateUser() async {
-    return fcmService.initialize()
-        .then((token) {
-          print('@@@@@ f.FcmService TOKEN: $token');
-          if (storage.get('user') == null) {
-            setState(() => _user = User.generate(token));
-            storage.set('user', _user.toJson());
-            return client.register(_user);
-          } else {
-            setState(() => _user = User.fromJson(json.decode(storage.get('user'))));
-            return Future.value(null);
-          }
-        });
+  Future updateUsers() {
+    return fcmService.initialize().then((token) {
+      return client.getUsers().then((users) {
+        return checkIsRegistered(token, users) ? updateState(users, _user) :
+          client.register(User.generate(token))
+            .then((user) => _user = user)
+            .then((_) => client.getUsers())
+            .then((users) => updateState(users, _user));
+      });
+    });
   }
 
-  Future updateAllUsers() {
-    return client.users().then((users) {
-      if (users.isEmpty) users..add(_user)..add(STUB_USER);
-      else if (users.length == 1 && users.contains(_user)) users.add(STUB_USER);
-      else {
-        if (users.indexOf(_user) >= 0) users..remove(_user)..insert(0, _user);
-        else users.insert(0, STUB_USER);
-      }
-      setState(() => _allUsers = users);
+  bool checkIsRegistered(String token, List<User> users) {
+    bool result = false;
+    users.forEach((user) {
+      if (token == user.token) {
+        result = true; _user = user;
+      }});
+    return result;
+  }
+
+  Future updateState(List<User> users, user) {
+    users..remove(user)..insert(0, user);
+    setState(() {
+      _user = user;
+      _allUsers = users;
     });
+    return Future.value(null);
   }
 
   @override
