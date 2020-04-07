@@ -52,33 +52,58 @@ class _MainScreenState extends State<MainScreen> {
     return Future.value(null);
   }
 
+  Future refresh() async {
+    return await client.getUsers()
+      .then((users) => updateState(users, _user));
+  }
+
   @override
   Widget build(BuildContext context) {
     print('build: ${_allUsers.length}');
     return Scaffold(
       appBar: AppBar(title: Text('FCM-CALLER-APP')),
       body: SafeArea(
-        child: Center(
-          child: ListView.separated(
-            physics: BouncingScrollPhysics(),
-            itemCount: _allUsers.length,
-            itemBuilder: (context, index) =>
-                          index == 0 ? ownInfoBlock() : getUserWidget(_allUsers[index]),
-            separatorBuilder: (context, index) {
-              return index == 0 ? Container(
-                child: Column(
-                  children: <Widget>[
-                    SizedBox(height: 16),
-                    Text('Контакты:', style: appTheme.textTheme.subtitle1)
-                  ],
-                ),
-              ) : SizedBox(height: 16);
-            },
-        ),),
+        child: Stack(
+          children: <Widget>[
+            _widgetUsersList(),
+            _widgetUpdateButton(),
+          ],
+        ),
       ),);
   }
-  
-  Widget ownInfoBlock() {
+
+  Center _widgetUsersList() {
+    return Center(
+            child: ListView.separated(
+              physics: BouncingScrollPhysics(),
+              itemCount: _allUsers.length,
+              itemBuilder: (context, index) =>
+              index == 0 ? _widgetTopUser() : _widgetUserContact(_allUsers[index]),
+              separatorBuilder: (context, index) {
+                return index == 0 ? Container(
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 16),
+                      Text('Контакты:', style: appTheme.textTheme.subtitle1)
+                    ],
+                  ),
+                ) : SizedBox(height: 16);
+              },
+            ),);
+  }
+
+  //TODO: refactor InkWell
+  Widget _widgetUpdateButton() {
+    return Positioned(bottom: 32,
+      right: 32,
+      child: InkWell(onTap: () => refresh(),
+        child: Container(width: 48,
+          height: 48,
+          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blueGrey),
+          child: Image.asset('assets/icons/ic_refresh.png', scale: 2, color: Colors.white),),),);
+  }
+
+  Widget _widgetTopUser() {
     return InkWell(
       onTap: () => client.callAll(),
       child: Column(
@@ -95,8 +120,8 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget getUserWidget(User user) {
-    return user == STUB_USER ? contactsStub() :
+  Widget _widgetUserContact(User user) {
+    return user == STUB_USER ? _widgetStubContact() :
         InkWell(
           onTap: () => Navigator.pushNamed(context, '/call', arguments: user),
           child: Row(children: <Widget>[
@@ -108,7 +133,7 @@ class _MainScreenState extends State<MainScreen> {
         );
   }
 
-  Widget contactsStub() {
+  Widget _widgetStubContact() {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       child: Text(
