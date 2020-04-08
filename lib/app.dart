@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:fcmcallerapp/screens/call_send_screen.dart';
+import 'package:fcmcallerapp/screens/call_receive_screen.dart';
 import 'package:fcmcallerapp/services/client.dart';
 import 'package:flutter/material.dart';
 
@@ -40,7 +41,8 @@ class _FcmCallerAppState extends State<FcmCallerApp> {
       initialRoute: '/',
       routes: {
         '/': (context) => MainScreen(),
-        '/call': (context) => CallSendScreen()
+        '/callSend': (context) => CallSendScreen(),
+        '/callReceive': (context) => CallReceiveScreen()
       },
       debugShowCheckedModeBanner: false,
     );

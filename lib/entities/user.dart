@@ -21,7 +21,7 @@ class User {
   User.fromSnapshot(DocumentSnapshot snapshot)
       : this(snapshot['token'], snapshot['name']);
 
-  const User.stub() : token = 'stub', name = 'stub';
+  const User.stub() : token = 'stub-token', name = '... ...';
 
   String toJson() => json.encode({'token': token, 'name': name});
 

@@ -1,4 +1,5 @@
 import 'package:fcmcallerapp/entities/user.dart';
+import 'package:fcmcallerapp/utils/ui_utils.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -52,9 +53,8 @@ class _MainScreenState extends State<MainScreen> {
     return Future.value(user);
   }
 
-  Future refresh() async {
-    return await client.getUsers()
-      .then((users) => updateState(users, _user));
+  Future refresh() {
+    return client.getUsers().then((users) => updateState(users, _user));
   }
 
   @override
@@ -80,43 +80,23 @@ class _MainScreenState extends State<MainScreen> {
               itemCount: _allUsers.length,
               itemBuilder: (context, index) =>
               index == 0 ? _widgetTopUser() : _widgetUserContact(_allUsers[index]),
-              separatorBuilder: (context, index) {
-                return index == 0 ? Container(
-                  child: Column(
-                    children: <Widget>[
-                      SizedBox(height: 16),
-                      Text('Контакты:', style: appTheme.textTheme.subtitle1)
-                    ],
-                  ),
-                ) : SizedBox(height: 16);
-              },
+              separatorBuilder: (context, index) => _widgetListSeparator(index),
             ),);
-  }
-
-  //TODO: refactor InkWell
-  Widget _widgetUpdateButton() {
-    return Positioned(bottom: 32, right: 32,
-      child: InkWell(onTap: () => refresh(),
-        child: Container(width: 48, height: 48,
-          decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blueGrey),
-          child: Image.asset('assets/icons/ic_refresh.png', scale: 2, color: Colors.white),),),);
   }
 
   Widget _widgetTopUser() {
     return InkWell(
-      onTap: () {
-        return client.call(_user, _user)
-            .then((_) => Navigator.pushNamed(context, '/call', arguments: _user));
-      },
+      onTap: () => client.call(_user, _user)
+            .then((_) => Navigator.pushNamed(context, '/callSend', arguments: _user)),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
           SizedBox(height: 32),
           AvatarWidget(_user.name, 64),
-            SizedBox(height: 16),
-            Text(_user != STUB_USER ? _user.name : '... ...',
-                style: appTheme.textTheme.headline1),
-            SizedBox(height: 32),
+          SizedBox(height: 16),
+          Text(_user != STUB_USER ? _user.name : '... ...',
+              style: appTheme.textTheme.headline1),
+          SizedBox(height: 32),
         ],
       ),
     );
@@ -127,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
         InkWell(
           onTap: () {
             return client.call(_user, user)
-                .then((_) => Navigator.pushNamed(context, '/call', arguments: user));
+                .then((_) => Navigator.pushNamed(context, '/callSend', arguments: user));
           },
           child: Row(children: <Widget>[
             SizedBox(width: 16),
@@ -146,6 +126,23 @@ class _MainScreenState extends State<MainScreen> {
           'Установите приложение на другие устройства. '
           'Проверьте подключение к сети.',
           style: appTheme.textTheme.subtitle2),
+    );
+  }
+
+  Widget _widgetUpdateButton() {
+    return Positioned(bottom: 32, right: 32,
+      child: UiUtils.widgetCircleButton(48, Colors.blueGrey,
+        'assets/icons/ic_refresh.png', 2, Colors.white,
+        () => refresh())
+    );
+  }
+
+  Widget _widgetListSeparator(int index) {
+    return index > 0 ? SizedBox(height: 16) : Container(
+      child: Container(
+        padding: EdgeInsets.only(top: 16),
+        child: Text('Контакты:', style: appTheme.textTheme.subtitle1, textAlign: TextAlign.center),
+      ),
     );
   }
 

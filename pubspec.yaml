@@ -30,8 +30,11 @@ dev_dependencies:
 
 flutter:
   assets:
+      - assets/icons/ic_call_answer.png
       - assets/icons/ic_call_end.png
       - assets/icons/ic_refresh.png
+      - assets/icons/ic_edit.png
+      - assets/icons/ic_cancel.png
 
   uses-material-design: true
 

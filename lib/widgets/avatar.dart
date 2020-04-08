@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import '../theme.dart';
 
 class AvatarWidget extends StatelessWidget {
-  final String name, initials;
-  final int colorIndex;
-  final double size;
+  final String _name, _initials;
+  final int _colorIndex;
+  final double _size;
 
-  AvatarWidget(this.name, this.size)
-      : initials = _getNameInitials(name),
-        colorIndex = _calcColorIndex(name);
+  AvatarWidget(this._name, this._size)
+      : _initials = _getNameInitials(_name),
+        _colorIndex = _calcColorIndex(_name);
 
   static String _getNameInitials(String name) {
     String result = '';
@@ -27,19 +27,19 @@ class AvatarWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: size,
-      height: size,
+      width: _size,
+      height: _size,
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(size / 2)),
-          color: name != 'stub' ? Color(avatarBcgColors[colorIndex]) : Color(0xFF666666)),
+          borderRadius: BorderRadius.all(Radius.circular(_size / 2)),
+          color: _name != 'stub' ? Color(avatarBcgColors[_colorIndex]) : Color(0xFF666666)),
       child: Center(
         child: Text(
-          name != 'stub' ? initials.toUpperCase() : '',
+          _name != 'stub' ? _initials.toUpperCase() : '',
           textAlign: TextAlign.center,
           style: TextStyle(
-              fontSize: size * 0.4,
+              fontSize: _size * 0.4,
               fontWeight: FontWeight.bold,
-              color: Color(userColors[colorIndex])),
+              color: Color(userColors[_colorIndex])),
         ),
       ),
     );

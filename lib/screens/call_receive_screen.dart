@@ -5,18 +5,18 @@ import 'package:flutter/material.dart';
 
 import '../theme.dart';
 
-class CallSendScreen extends StatefulWidget {
+class CallReceiveScreen extends StatefulWidget {
   @override
-  _CallSendScreenState createState() => _CallSendScreenState();
+  _CallReceiveScreenState createState() => _CallReceiveScreenState();
 }
 
-class _CallSendScreenState extends State<CallSendScreen>
+class _CallReceiveScreenState extends State<CallReceiveScreen>
     with SingleTickerProviderStateMixin {
 
   Animation<int> _textAnimation;
   AnimationController _textAnimationController;
 
-  final String _calling = 'вызов';
+  final String _calling = 'вызывает';
   String _splash = '';
 
   @override
@@ -51,33 +51,41 @@ class _CallSendScreenState extends State<CallSendScreen>
   Widget build(BuildContext context) {
     User user = ModalRoute.of(context).settings.arguments??STUB_USER;
     return Scaffold(
-        body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: <Widget>[
-              Container(
-                child: Center(
-                  child: Column(mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: 160),
-                      AvatarWidget(user.name, 96),
-                      SizedBox(height: 24),
-                      Text(user.name, style: appTheme.textTheme.headline1),
-                      SizedBox(height: 4),
-                      Text(_splash, style: appTheme.textTheme.subtitle1),
-                    ],
-                  ),
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: <Widget>[
+            Container(
+              child: Center(
+                child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    SizedBox(height: 160),
+                    AvatarWidget(user.name, 96),
+                    SizedBox(height: 24),
+                    Text(user.name, style: appTheme.textTheme.headline1),
+                    SizedBox(height: 4),
+                    Text(_splash, style: appTheme.textTheme.subtitle1),
+                  ],
                 ),
               ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 32),
-                child: UiUtils.widgetCircleButton(56, Colors.red,
-                       'assets/icons/ic_call_end.png', 1.5, Colors.white,
-                       () => _cancelCall(context)),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(48),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: <Widget>[
+                  UiUtils.widgetCircleButton(56, Colors.red,
+                      'assets/icons/ic_cancel.png', 2, Colors.white,
+                          () => _cancelCall(context)),
+                  UiUtils.widgetCircleButton(56, Colors.green,
+                      'assets/icons/ic_call_answer.png', 2, Colors.white,
+                          () => _cancelCall(context)),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
+      ),
     );
   }
 

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fcmcallerapp/entities/user.dart';
@@ -11,17 +12,17 @@ class FirebaseService extends RestApi {
   static const String FCM_SERVER_KEY = 'key=AAAAT5n4t90:APA91bFNmsK2qzPc7S-4qF3Ao3fpEUfeEBRLCntF9SFqCC1Gmwgtd-4_oI4uFiHf2JigcwD80toMLWd_Kq36fk6mGhD5_xvDzjv16xcrwstaICnn-GAh_MZtJmrD3XKBxYMP7HGlBgu3';
 
   final FirebaseMessaging _fcm = FirebaseMessaging();
-  final Firestore _firestore = Firestore.instance
-                                  ..settings(persistenceEnabled: false);
+  final Firestore _firestore = Firestore.instance;
 
   Future<String> initialize() async {
     _fcm.requestNotificationPermissions(IosNotificationSettings(provisional: true));
     _fcm.subscribeToTopic('calls');
 
+    _firestore.settings(persistenceEnabled: false);
+
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("@@@@@ f.FcmService onMessage: $message");
-        //todo слушать Refresh
       },
 
       onLaunch: (Map<String, dynamic> message) async {
@@ -72,6 +73,7 @@ class FirebaseService extends RestApi {
       body: json.encode({
         'to': '/device/${to.token}',
         'data' : {
+          'type' : 'call',
           'body' : from.toJson(),
           'title': from.name
         }
@@ -90,8 +92,9 @@ class FirebaseService extends RestApi {
           "to": "/topics/calls",
           "collapse_key": "type_a",
           "data" : {
-            "body" : "",
-            "title": "Проверка связи!"
+            'type' : 'call',
+            "body" : '',
+            "title": 'Проверка связи!'
           }
         })).then((response) => print('@@@@@ result: ${response.body}'));
   }

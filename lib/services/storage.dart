@@ -9,8 +9,7 @@ abstract class Storage<T> {
 class TemporaryStorage extends Storage {
   final Map<String, dynamic> _map;
 
-  TemporaryStorage()
-      : _map = HashMap();
+  TemporaryStorage() : _map = HashMap();
 
   @override
   void set(String key, value) => _map[key] = value;
