@@ -34,8 +34,6 @@ class User {
   int get hashCode => token.hashCode;
 
   @override
-  String toString() {
-    return 'User{token: $token, name: $name}';
-  }
+  String toString() => 'User{name: $name}';
 
 }

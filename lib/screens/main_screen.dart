@@ -45,7 +45,8 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future<User> updateState(List<User> users, user) {
-    users..remove(user)..insert(0, user);
+    users.remove(user);
+    users.insert(0, user);
     setState(() {
       _user = user;
       _allUsers = users;
@@ -57,9 +58,11 @@ class _MainScreenState extends State<MainScreen> {
     return client.getUsers().then((users) => updateState(users, _user));
   }
 
+  void _onTapUser(User from, User to) => client.call(from, to)
+      .then((_) => Navigator.pushNamed(context, '/callSend', arguments: _user));
+
   @override
   Widget build(BuildContext context) {
-    print('build: ${_allUsers.length}');
     return Scaffold(
       appBar: AppBar(title: Text('FCM-CALLER-APP')),
       body: SafeArea(
@@ -85,37 +88,44 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _widgetTopUser() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        SizedBox(height: 32),
+        AvatarWidget(_user.name, 64, onTap: () => _onTapUser(_user, _user)),
+        _widgetEditableUserName(_user),
+        SizedBox(height: 16),
+      ],
+    );
+  }
+
+  Widget _widgetEditableUserName(User user) {
     return InkWell(
-      onTap: () => client.call(_user, _user)
-            .then((_) => Navigator.pushNamed(context, '/callSend', arguments: _user)),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          SizedBox(height: 32),
-          AvatarWidget(_user.name, 64),
-          SizedBox(height: 16),
-          Text(_user != STUB_USER ? _user.name : '... ...',
-              style: appTheme.textTheme.headline1),
-          SizedBox(height: 32),
-        ],
+      onTap: () => { /*todo change name */ },
+      child: Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            SizedBox(width: 16),
+            Text(user.name, style: appTheme.textTheme.headline1),
+            SizedBox(width: 8),
+            Image.asset('assets/icons/ic_edit.png', scale: 2.5, color: Colors.white),
+          ],
+        ),
       ),
     );
   }
 
   Widget _widgetUserContact(User user) {
-    return user == STUB_USER ? _widgetStubContact() :
-        InkWell(
-          onTap: () {
-            return client.call(_user, user)
-                .then((_) => Navigator.pushNamed(context, '/callSend', arguments: user));
-          },
-          child: Row(children: <Widget>[
-            SizedBox(width: 16),
-            AvatarWidget(user.name, 48),
-            SizedBox(width: 16),
-            Text(user.name, style: appTheme.textTheme.headline2,)],
-          ),
-        );
+    return user == STUB_USER ? _widgetStubContact()
+        : InkWell(onTap: () => _onTapUser(_user, user),
+            child: Row(children: <Widget>[
+              SizedBox(width: 16),
+              AvatarWidget(user.name, 48),
+              SizedBox(width: 16),
+              Text(user.name, style: appTheme.textTheme.headline2,)
+      ],),);
   }
 
   Widget _widgetStubContact() {
@@ -139,10 +149,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _widgetListSeparator(int index) {
     return index > 0 ? SizedBox(height: 16) : Container(
-      child: Container(
-        padding: EdgeInsets.only(top: 16),
-        child: Text('Контакты:', style: appTheme.textTheme.subtitle1, textAlign: TextAlign.center),
-      ),
+      child: Text('Контакты:', style: appTheme.textTheme.subtitle1, textAlign: TextAlign.center),
     );
   }
 
