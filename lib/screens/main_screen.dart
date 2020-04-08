@@ -43,13 +43,13 @@ class _MainScreenState extends State<MainScreen> {
     return result;
   }
 
-  Future updateState(List<User> users, user) {
+  Future<User> updateState(List<User> users, user) {
     users..remove(user)..insert(0, user);
     setState(() {
       _user = user;
       _allUsers = users;
     });
-    return Future.value(null);
+    return Future.value(user);
   }
 
   Future refresh() async {
@@ -95,11 +95,9 @@ class _MainScreenState extends State<MainScreen> {
 
   //TODO: refactor InkWell
   Widget _widgetUpdateButton() {
-    return Positioned(bottom: 32,
-      right: 32,
+    return Positioned(bottom: 32, right: 32,
       child: InkWell(onTap: () => refresh(),
-        child: Container(width: 48,
-          height: 48,
+        child: Container(width: 48, height: 48,
           decoration: BoxDecoration(shape: BoxShape.circle, color: Colors.blueGrey),
           child: Image.asset('assets/icons/ic_refresh.png', scale: 2, color: Colors.white),),),);
   }

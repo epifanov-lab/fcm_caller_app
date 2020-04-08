@@ -36,9 +36,9 @@ class FirebaseService extends RestApi {
     return _fcm.getToken();
   }
 
-  //TODO переписать на stream.listem. У дарта проблемы с Future.
+  //TODO переписать на stream.listen. У дарта проблемы с Future.
   @override
-  Future<List<User>> getUsers() {
+  Future<List> getUsers() {
     print('@@@@@ FS: getUsers');
     return _firestore.collection('users').snapshots().first
         .then((snapshot) => snapshot.documents)
@@ -59,7 +59,7 @@ class FirebaseService extends RestApi {
     print('@@@@@ FS: register $user');
     return _firestore.collection('users')
         .add(json.decode(user.toJson()))
-              .then((docref) => user);
+        .then((docref) => user);
   }
 
   @override
@@ -70,7 +70,7 @@ class FirebaseService extends RestApi {
         'Authorization': FCM_SERVER_KEY,
         'Content-Type': 'application/json'},
       body: json.encode({
-        'token': '${to.token}',
+        'to': '/device/${to.token}',
         'data' : {
           'body' : from.toJson(),
           'title': from.name

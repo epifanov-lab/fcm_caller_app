@@ -1,7 +1,7 @@
 import 'package:fcmcallerapp/entities/user.dart';
 
 abstract class RestApi {
-  Future<List<User>> getUsers();
+  Future<List> getUsers();
   Future<User> register(User user);
   Future call(User from, User to);
   Future callAll();
@@ -29,8 +29,7 @@ class StubClient extends RestApi {
   }
 
   @override
-  Future<List<User>> getUsers()
-  => Future.value(getRandomUsers(10));
+  Future<List> getUsers() => Future.value(getRandomUsers(10));
 
   @override
   Future<User> register(User user) {
@@ -40,23 +39,18 @@ class StubClient extends RestApi {
   }
 
   @override
-  Future call(User from, User to)
-  => Future.value({});
+  Future call(User from, User to) => Future.value({});
 
   @override
-  Future callAll()
-  => Future.value({});
+  Future callAll() => Future.value({});
 
   @override
-  Future callReceiveAnswer(User from, User to)
-  => Future.value({});
+  Future callReceiveAnswer(User from, User to) => Future.value({});
 
   @override
-  Future callReceiveDismiss(User from, User to)
-  => Future.value({});
+  Future callReceiveDismiss(User from, User to) => Future.value({});
 
   @override
-  Future callSendCancel(User from, User to)
-  => Future.value({});
+  Future callSendCancel(User from, User to) => Future.value({});
 
 }
