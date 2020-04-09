@@ -1,6 +1,5 @@
 import 'dart:collection';
 
-
 abstract class Storage<T> {
   void set(String key, T value);
   T get(String key);

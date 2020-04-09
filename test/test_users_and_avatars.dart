@@ -1,27 +1,24 @@
 import 'package:fcmcallerapp/entities/user.dart';
-import 'package:fcmcallerapp/services/client.dart';
 import 'package:fcmcallerapp/theme.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/material.dart';
+
+import '../lib/services/thrash/client.dart';
 
 class TestUsersAndAvatars extends StatelessWidget {
   static final String title = 'users & avatars';
 
   @override
   Widget build(BuildContext context) {
+    List<User> users = StubClient.getRandomUsers(50);
     return Scaffold(
-        appBar: AppBar(title: Text('ui-test-zone: $title')),
-        body: testUsersAndAvatars(50)
-    );
-  }
-
-  Center testUsersAndAvatars(int count) {
-    List<User> users = StubClient.getRandomUsers(count);
-    return Center(
-      child: ListView(
-          padding: const EdgeInsets.all(16),
-          children: getUserTextWidgetsList(users),
-      ),
+        appBar: AppBar(title: Text('test-zone: $title')),
+        body: Center(
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: getUserTextWidgetsList(users),
+          ),
+        )
     );
   }
 

@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'package:fcmcallerapp/app.dart';
+import 'package:fcmcallerapp/app_main.dart';
 import 'package:flutter/material.dart';
 
 const Color colorBcgMain = const Color(0xFF333333);

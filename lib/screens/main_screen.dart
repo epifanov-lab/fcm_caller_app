@@ -4,7 +4,7 @@ import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../app.dart';
+import '../app_main.dart';
 import '../theme.dart';
 
 class MainScreen extends StatefulWidget {
@@ -24,15 +24,11 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future updateUsers() {
-    return fcmService.initialize().then((token) {
-      /* проблема с токеном. есть повтор в бд. каким-то
-       образом иногда перезаписывается в другого юзера */
+    return fcm.initialize().then((token) {
       print('@@@@@ fcmService.initialize: $token');
-      return client.getUsers().then((users) {
+      return firestore.getUsers().then((users) {
         return checkIsRegistered(token, users) ? updateState(users, _user) :
-          client.register(User.generate(token))
-            //.then((user) => _user = user)
-            //.then((_) => client.getUsers())
+          firestore.register(User.generate(token))
             .then((user) => updateState(users, user));
       });
     });
@@ -59,10 +55,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future refresh() {
-    return client.getUsers().then((users) => updateState(users, _user));
+    return firestore.getUsers().then((users) => updateState(users, _user));
   }
 
-  void _onTapUser(User from, User to) => client.call(from, to)
+  void _onTapUser(User from, User to) => fcm.call(from, to)
       .then((_) => Navigator.pushNamed(context, '/callSend', arguments: _user));
 
   @override
@@ -111,7 +107,7 @@ class _MainScreenState extends State<MainScreen> {
           .then((result) {
             if (result != null) {
               setState(() => _user.name = result);
-              return client.rename(_user);
+              return firestore.rename(_user);
             } else return Future.value(null);
           }),
       child: Padding(

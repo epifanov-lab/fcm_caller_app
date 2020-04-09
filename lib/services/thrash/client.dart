@@ -1,17 +1,17 @@
 import 'package:fcmcallerapp/entities/user.dart';
 
-abstract class RestApi {
+abstract class Client {
   Future<List> getUsers();
   Future<User> register(User user);
   Future rename(User user);
   Future call(User from, User to);
   Future callAll();
-  Future callSendCancel(User from, User to);
-  Future callReceiveDismiss(User from, User to);
-  Future callReceiveAnswer(User from, User to);
+  //Future callSendCancel(User from, User to);
+  //Future callReceiveDismiss(User from, User to);
+  //Future callReceiveAnswer(User from, User to);
 }
 
-class StubClient extends RestApi {
+class StubClient extends Client {
 
   static const String DUMMY_TOKEN = 'cuwf27CBQYy-bEPVJyP3Xh:APA91bGmLEQhUA'
       'AlY3uzSS7Mzb5NrTWp7VRCE6pIaRGe6iunJfc585TU1IA2S3uXkSycCGUMySBEly1_1y'
@@ -48,6 +48,7 @@ class StubClient extends RestApi {
   @override
   Future callAll() => Future.value({});
 
+  /*
   @override
   Future callReceiveAnswer(User from, User to) => Future.value({});
 
@@ -56,5 +57,6 @@ class StubClient extends RestApi {
 
   @override
   Future callSendCancel(User from, User to) => Future.value({});
+  */
 
 }
