@@ -1,29 +1,35 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:fcmcallerapp/utils/names_generator.dart';
 
-const User STUB_USER = const User.stub();
+User STUB_USER = User.stub();
 
 class User {
 
   final String token;
-  final String name;
+  final String docId;
+  String name;
 
-  User(this.token, this.name);
+  User(this.token, this.docId, this.name);
 
   User.generate(String token)
-      : this(token, NamesGenerator.create());
+      : this(token, _genDocId(token), NamesGenerator.create());
 
   User.fromJson(Map<String, dynamic> json)
-      : this(json['token'], json['name']);
+      : this(json['token'], json['docId'], json['name']);
 
   User.fromSnapshot(DocumentSnapshot snapshot)
-      : this(snapshot['token'], snapshot['name']);
+      : this(snapshot['token'], snapshot['docId'], snapshot['name']);
 
-  const User.stub() : token = 'stub-token', name = '... ...';
+  User.stub() : this('stub-token', 'stub-docId', '... ...');
 
-  String toJson() => json.encode({'token': token, 'name': name});
+  String toJson() => json.encode({'token': token, 'docId': docId, 'name': name});
+
+  static String _genDocId(String token) {
+    return '${Platform.operatingSystem}-${token.hashCode}';
+  }
 
   @override
   bool operator ==(Object other) =>

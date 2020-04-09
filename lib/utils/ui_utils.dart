@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:fcmcallerapp/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 
@@ -7,9 +8,38 @@ class UiUtils {
 
   static Future dialogEditText(BuildContext context, String currentText) {
     return showDialog(context: context, builder: (BuildContext context) {
-      return AlertDialog(
-        title: Text("Alert Dialog"),
-        content: Text("Dialog Content"),);
+      TextEditingController controller = TextEditingController(text: currentText);
+      return Dialog(
+        backgroundColor: colorBcgMain,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: <Widget>[
+              TextField(
+                style: appTheme.textTheme.headline2,
+                controller: controller,
+                autofocus: true,
+              ),
+              SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: <Widget>[
+                  InkWell(
+                    onTap: () => Navigator.pop(context),
+                    child: Text('cancel', style: appTheme.textTheme.subtitle1),
+                  ),
+                  SizedBox(width: 16),
+                  InkWell(
+                    onTap: () => Navigator.pop(context, controller.text),
+                    child: Text('accept', style: appTheme.textTheme.subtitle1),
+                  ),
+                ],
+              )
+            ],
+          ),
+        ));
     });
   }
 

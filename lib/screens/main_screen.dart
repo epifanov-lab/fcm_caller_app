@@ -107,7 +107,13 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _widgetEditableUserName(User user) {
     return InkWell(
-      onTap: () => { /* todo change name */ },
+      onTap: () => UiUtils.dialogEditText(context, _user.name)
+          .then((result) {
+            if (result != null) {
+              setState(() => _user.name = result);
+              return client.rename(_user);
+            } else return Future.value(null);
+          }),
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(

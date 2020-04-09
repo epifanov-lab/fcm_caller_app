@@ -59,8 +59,17 @@ class FirebaseService extends RestApi {
   Future<User> register(User user) {
     print('@@@@@ FS: register $user');
     return _firestore.collection('users')
-        .add(json.decode(user.toJson()))
+        .document(user.docId)
+        .setData(json.decode(user.toJson()))
         .then((docref) => user);
+  }
+
+  @override
+  Future rename(User user) {
+    print('@@@@@ FS: renamed $user');
+    return _firestore.collection('users')
+        .document(user.docId)
+        .setData(json.decode(user.toJson()));
   }
 
   @override
