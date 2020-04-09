@@ -1,16 +1,20 @@
 import 'dart:ui';
 
+import 'package:fcmcallerapp/app.dart';
 import 'package:flutter/material.dart';
 
 const Color colorBcgMain = const Color(0xFF333333);
-const Color textColorMain = const Color(0xFFFFFFFF);
+const Color colorBcgAccept = const Color(0xFF009688);
+const Color colorBcgCancel = const Color(0xFFF44336);
+const Color colorText = const Color(0xFFFFFFFF);
+Color colorAccent = Color(bcgAppColors[random.nextInt(bcgAppColors.length)]);
 
-final List<int> userColors =
-[0xFFF44336, 0xFFe91e63, 0xFF9C27B0, 0xFF673AB7,
+final List<int> appColors =
+[ 0xFFF44336, 0xFFe91e63, 0xFF9C27B0, 0xFF673AB7,
   0xFF3F51B5, 0xFF2196F3, 0xFF03A9F4, 0xFF00BCD4, 0xFF009688,
-  0xFF4CAF50, 0xFF8BC34A, 0xFFFF9800, 0xFFFF5722, 0xFF607D8B];
+  0xFF4CAF50, 0xFF8BC34A, 0xFFFF9800, 0xFFFF5722, 0xFF607D8B ];
 
-final List<int> avatarBcgColors = userColors
+final List<int> bcgAppColors = appColors
     .map((color) => Color.alphaBlend(Colors.white70, Color(color)))
     .map((color) => color.value)
     .toList();
@@ -26,7 +30,7 @@ final ThemeData appTheme = ThemeData(
       subtitle2: TextStyle(fontSize: 14.0),
       caption: TextStyle(fontSize: 10.0),
     ).apply(
-        bodyColor: textColorMain,
-        displayColor: textColorMain
+        bodyColor: colorText,
+        displayColor: colorText
     )
 );

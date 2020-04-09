@@ -1,35 +1,35 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-
-import '../app.dart';
+import 'package:flutter/rendering.dart';
 
 class UiUtils {
 
-  static Color getRandomColor({ List<Color> colors, Color defColor = Colors.black }) {
-    if (colors == null || colors.isEmpty) return defColor;
-    else return colors[random.nextInt(colors.length)];
+  static Future dialogEditText(BuildContext context, String currentText) {
+    return showDialog(context: context, builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text("Alert Dialog"),
+        content: Text("Dialog Content"),);
+    });
   }
-
-/*  static InkWell widgetCircleButton(double size, Color bcgColor,
-                                    String icAssetRes, double icScale, Color icColor,
-                                    Function onTap) {
-
-    return InkWell(onTap: () => onTap(),
-      child: Container(width: size, height: size,
-        decoration: BoxDecoration(shape: BoxShape.circle, color: bcgColor),
-        child: Image.asset(icAssetRes, scale: icScale, color: icColor)));
-  }*/
 
   static Widget widgetCircleButton(double size, Color bcgColor,
                                    String icAssetRes, double icScale, Color icColor,
                                    Function onTap) {
     return RawMaterialButton(
+        constraints: BoxConstraints(
+            minWidth: size, minHeight: size,
+            maxWidth: size, maxHeight: size),
         onPressed: () => onTap(),
         fillColor: bcgColor,
         shape: CircleBorder(),
         padding: EdgeInsets.all(8),
+        splashColor: invertColor(bcgColor),
         child: Image.asset(icAssetRes, scale: icScale, color: icColor));
+  }
+
+  static Color invertColor(Color color) {
+    return Color.fromARGB(255, 255 - color.red, 255 - color.green, 255 - color.blue);
   }
 
 }

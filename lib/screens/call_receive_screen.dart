@@ -74,10 +74,10 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  UiUtils.widgetCircleButton(56, Colors.red,
+                  UiUtils.widgetCircleButton(56, colorBcgCancel,
                       'assets/icons/ic_cancel.png', 2, Colors.white,
                           () => _cancelCall(context)),
-                  UiUtils.widgetCircleButton(56, Colors.green,
+                  UiUtils.widgetCircleButton(56, colorBcgAccept,
                       'assets/icons/ic_call_answer.png', 2, Colors.white,
                           () => _cancelCall(context)),
                 ],

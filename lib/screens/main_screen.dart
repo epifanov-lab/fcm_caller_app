@@ -25,12 +25,15 @@ class _MainScreenState extends State<MainScreen> {
 
   Future updateUsers() {
     return fcmService.initialize().then((token) {
+      /* проблема с токеном. есть повтор в бд. каким-то
+       образом иногда перезаписывается в другого юзера */
+      print('@@@@@ fcmService.initialize: $token');
       return client.getUsers().then((users) {
         return checkIsRegistered(token, users) ? updateState(users, _user) :
           client.register(User.generate(token))
-            .then((user) => _user = user)
-            .then((_) => client.getUsers())
-            .then((users) => updateState(users, _user));
+            //.then((user) => _user = user)
+            //.then((_) => client.getUsers())
+            .then((user) => updateState(users, user));
       });
     });
   }
@@ -41,6 +44,7 @@ class _MainScreenState extends State<MainScreen> {
       if (token == user.token) {
         result = true; _user = user;
       }});
+    print('@@@@@ checkIsRegistered: $result $_user');
     return result;
   }
 
@@ -69,7 +73,7 @@ class _MainScreenState extends State<MainScreen> {
         child: Stack(
           children: <Widget>[
             _widgetUsersList(),
-            _widgetUpdateButton(),
+            _widgetRefreshButton(),
           ],
         ),
       ),);
@@ -78,12 +82,11 @@ class _MainScreenState extends State<MainScreen> {
   //TODO: StreamBuilder _firestore.collection('users').snapshots().listen(...)
   Center _widgetUsersList() {
     return Center(
-            child: ListView.separated(
+            child: ListView.builder(
               physics: BouncingScrollPhysics(),
               itemCount: _allUsers.length,
               itemBuilder: (context, index) =>
-              index == 0 ? _widgetTopUser() : _widgetUserContact(_allUsers[index]),
-              separatorBuilder: (context, index) => _widgetListSeparator(index),
+                index == 0 ? _widgetTopUser() : _widgetUserContact(_allUsers[index]),
             ),);
   }
 
@@ -92,16 +95,19 @@ class _MainScreenState extends State<MainScreen> {
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
         SizedBox(height: 32),
-        AvatarWidget(_user.name, 64, onTap: () => _onTapUser(_user, _user)),
+        AvatarWidget(_user.name, 80, onTap: () => _onTapUser(_user, _user)),
+        SizedBox(height: 8),
         _widgetEditableUserName(_user),
         SizedBox(height: 16),
+        Text('Контакты:', style: appTheme.textTheme.subtitle1, textAlign: TextAlign.center),
+        _allUsers.length == 1 ? _widgetStubContact() : Container()
       ],
     );
   }
 
   Widget _widgetEditableUserName(User user) {
     return InkWell(
-      onTap: () => { /*todo change name */ },
+      onTap: () => { /* todo change name */ },
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 8),
         child: Row(
@@ -118,14 +124,16 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Widget _widgetUserContact(User user) {
-    return user == STUB_USER ? _widgetStubContact()
-        : InkWell(onTap: () => _onTapUser(_user, user),
-            child: Row(children: <Widget>[
-              SizedBox(width: 16),
-              AvatarWidget(user.name, 48),
-              SizedBox(width: 16),
-              Text(user.name, style: appTheme.textTheme.headline2,)
-      ],),);
+    return InkWell(onTap: () => _onTapUser(_user, user),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              child: Row(children: <Widget>[
+                SizedBox(width: 16),
+                AvatarWidget(user.name, 48),
+                SizedBox(width: 16),
+                Text(user.name, style: appTheme.textTheme.headline2,)
+      ],),
+            ),);
   }
 
   Widget _widgetStubContact() {
@@ -139,17 +147,11 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 
-  Widget _widgetUpdateButton() {
+  Widget _widgetRefreshButton() {
     return Positioned(bottom: 32, right: 32,
-      child: UiUtils.widgetCircleButton(48, Colors.blueGrey,
-        'assets/icons/ic_refresh.png', 2, Colors.white,
+      child: UiUtils.widgetCircleButton(56, colorAccent,
+        'assets/icons/ic_refresh.png', 2.2, Colors.white,
         () => refresh())
-    );
-  }
-
-  Widget _widgetListSeparator(int index) {
-    return index > 0 ? SizedBox(height: 16) : Container(
-      child: Text('Контакты:', style: appTheme.textTheme.subtitle1, textAlign: TextAlign.center),
     );
   }
 

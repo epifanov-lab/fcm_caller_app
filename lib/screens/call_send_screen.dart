@@ -71,7 +71,7 @@ class _CallSendScreenState extends State<CallSendScreen>
               ),
               Padding(
                 padding: const EdgeInsets.only(bottom: 32),
-                child: UiUtils.widgetCircleButton(56, Colors.red,
+                child: UiUtils.widgetCircleButton(56, colorBcgCancel,
                        'assets/icons/ic_call_end.png', 1.5, Colors.white,
                        () => _cancelCall(context)),
               ),
