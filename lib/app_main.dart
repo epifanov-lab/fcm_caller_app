@@ -2,12 +2,13 @@ import 'dart:math';
 
 import 'package:fcmcallerapp/screens/call_send_screen.dart';
 import 'package:fcmcallerapp/screens/call_receive_screen.dart';
+import 'package:fcmcallerapp/screens/main_screen_wss.dart';
 import 'package:fcmcallerapp/services/firestore_service.dart';
 import 'package:fcmcallerapp/services/wss_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import 'screens/main_screen.dart';
+import 'screens/main_screen_fb.dart';
 import 'services/fcm_service.dart';
 import 'theme.dart';
 
@@ -23,7 +24,7 @@ class FcmCallerApp extends StatefulWidget {
   _FcmCallerAppState createState() => _FcmCallerAppState();
 }
 
-class _FcmCallerAppState extends State<FcmCallerApp>  with WidgetsBindingObserver {
+class _FcmCallerAppState extends State<FcmCallerApp> with WidgetsBindingObserver {
 
   @override
   void initState() {
@@ -50,7 +51,9 @@ class _FcmCallerAppState extends State<FcmCallerApp>  with WidgetsBindingObserve
       theme: appTheme,
       initialRoute: '/',
       routes: {
-        '/': (context) => MainScreen(),
+        '/': (context) => MainScreenWss(),
+        '/mainWss': (context) => MainScreenWss(),
+        '/mainFb': (context) => MainScreenFb(),
         '/callSend': (context) => CallSendScreen(),
         '/callReceive': (context) => CallReceiveScreen(),
       },

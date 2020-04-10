@@ -47,7 +47,7 @@ class AvatarWidget extends StatelessWidget {
         style: TextStyle(
             fontSize: _size * 0.4,
             fontWeight: FontWeight.bold,
-            color: Color(appColors[_colorIndex])),
+            color: Color(_name != STUB_USER.name ? appColors[_colorIndex] : 0xFFFFFFFF)),
       ),
     );
   }

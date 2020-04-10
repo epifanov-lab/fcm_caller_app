@@ -20,11 +20,12 @@ class _TestWssServiceState extends State<TestWssService> {
   }
 
   void runWssTest() {
+    /* todo change to 'add user' */
     Observable.range(0, 20) //todo не то
         .delay(Duration(seconds: 2))
-        .listen((number) => wss.sendMessage('message $number'));
+        .listen((number) => wss.sendMessage('message', null));
 
-    wss.events().listen((event) {});
+    wss.data.listen((event) {});
   }
 
   @override

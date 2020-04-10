@@ -27,7 +27,7 @@ class FirestoreService {
   Future<User> register(User user) {
     print('@@@@@ FS: register $user');
     return _firestore.collection('users')
-        .document(user.docId)
+        .document(user.id)
         .setData(json.decode(user.toJson()))
         .then((docref) => user);
   }
@@ -35,7 +35,7 @@ class FirestoreService {
   Future rename(User user) {
     print('@@@@@ FS: renamed $user');
     return _firestore.collection('users')
-        .document(user.docId)
+        .document(user.id)
         .setData(json.decode(user.toJson()));
   }
 

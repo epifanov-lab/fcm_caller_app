@@ -8,24 +8,25 @@ User STUB_USER = User.stub();
 
 class User {
 
+  final String id;
   final String token;
-  final String docId;
+  final String type;
   String name;
 
-  User(this.token, this.docId, this.name);
+  User(this.id, this.token, this.type, this.name);
 
   User.generate(String token)
-      : this(token, _genDocId(token), NamesGenerator.create());
+      : this(_genDocId(token), token, 'mobile', NamesGenerator.create());
 
   User.fromJson(Map<String, dynamic> json)
-      : this(json['token'], json['docId'], json['name']);
+      : this(json['id'], json['token'], json['type'], json['name']);
 
   User.fromSnapshot(DocumentSnapshot snapshot)
-      : this(snapshot['token'], snapshot['docId'], snapshot['name']);
+      : this(snapshot['id'], snapshot['token'], snapshot['type'], snapshot['name']);
 
-  User.stub() : this('stub-token', 'stub-docId', '... ...');
+  User.stub() : this( 'stub-id', 'stub-token', 'stub-type', '... ...');
 
-  String toJson() => json.encode({'token': token, 'docId': docId, 'name': name});
+  String toJson() => json.encode({'id': id, 'token': token, 'type': type, 'name': name});
 
   static String _genDocId(String token) {
     return '${Platform.operatingSystem}-${token.hashCode}';

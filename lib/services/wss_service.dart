@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:ui';
 
 import 'package:connectivity/connectivity.dart';
@@ -14,7 +15,8 @@ class WssService {
   Subject<IOWebSocketChannel> _channels;
   IOWebSocketChannel _currentChannel;
 
-  StreamController<String> _data;
+  StreamController<String> _dataController;
+  Stream<Map<String, dynamic>> data;
 
   Subject<Map<String, dynamic>> states;
   final Map<String, dynamic> _info = {
@@ -25,12 +27,16 @@ class WssService {
     'channels_closed': 0
   };
 
+  IOWebSocketChannel _createWsChannel()
+        => IOWebSocketChannel.connect('wss://caller.rtt.space/wss/');
+
   WssService()
       : _lifecycleEvents = PublishSubject(),
         _connectivityEvents = Connectivity().onConnectivityChanged {
     _currentChannel = _createWsChannel();
     _channels = BehaviorSubject.seeded(_currentChannel);
-    _data = StreamController.broadcast();
+    _dataController = StreamController.broadcast();
+    data = _dataController.stream.map((event) => json.decode(event));
     states = BehaviorSubject.seeded(_info);
 
     _connectability = Observable.combineLatest([
@@ -56,27 +62,25 @@ class WssService {
        _channels.distinct().listen((channel) {
          _updateStateMap('channel.hashCode', channel.hashCode);
          _currentChannel = channel
-           ..stream.listen((message) => _receiveMessage(message),
-               onDone: () => _updateStateMap('channels_closed', ++_info['channels_closed']));
+           ..stream.listen(
+                   (message) => _receiveMessage(message),
+                    onDone: () => _updateStateMap('channels_closed', ++_info['channels_closed']));
        });
   }
 
-  Observable events() => Observable(_data.stream);
-
   void _receiveMessage(message) {
     print('ws <<< $message');
-    _data.add(message);
+    _dataController.add(message);
   }
 
-  Future sendMessage(String message) {
-    print('ws >>> $message');
+  Future sendMessage(String event, dynamic data) {
     if (_currentChannel.closeCode == null) {
+      String message = json.encode({'event': event, 'data':data});
       _currentChannel.sink.add(message);
+      print('ws >>> $event: $data');
       return Future.value(null);
-    } else return Future.error('Send message to ws failed. channel is closed.');
+    } else return Future.error('Send message to ws failed. Channel is closed.');
   }
-
-  IOWebSocketChannel _createWsChannel() => IOWebSocketChannel.connect('ws://echo.websocket.org');
 
   void _updateStateMap(String key, dynamic value) {
     print('wss: state changes: $key = $value');
@@ -90,7 +94,7 @@ class WssService {
     _lifecycleEvents.close();
     _channels.close();
     states.close();
-    _data.close();
+    _dataController.close();
   }
 
   static bool _concatBooleans(Iterable booleans) {

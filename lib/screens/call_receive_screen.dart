@@ -49,7 +49,7 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
 
   @override
   Widget build(BuildContext context) {
-    User user = ModalRoute.of(context).settings.arguments??STUB_USER;
+    String name = ModalRoute.of(context).settings.arguments??STUB_USER;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -60,9 +60,9 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
                 child: Column(mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: 160),
-                    AvatarWidget(user.name, 96),
+                    AvatarWidget(name, 96),
                     SizedBox(height: 24),
-                    Text(user.name, style: appTheme.textTheme.headline1),
+                    Text(name, style: appTheme.textTheme.headline1),
                     SizedBox(height: 4),
                     Text(_splash, style: appTheme.textTheme.subtitle1),
                   ],
@@ -72,7 +72,7 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
             Padding(
               padding: const EdgeInsets.all(48),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: <Widget>[
                   UiUtils.widgetCircleButton(56, colorBcgCancel,
                       'assets/icons/ic_cancel.png', 2, Colors.white,
