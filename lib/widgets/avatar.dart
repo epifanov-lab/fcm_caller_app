@@ -21,7 +21,8 @@ class AvatarWidget extends StatelessWidget {
   static String _getNameInitials(String name) {
     String result = '';
     var split = name.split(' ');
-    for (int i = 0; i < 2; i++) result += split[i][0];
+    if (split.length > 2) split.removeRange(2, split.length);
+    for (int i = 0; i < split.length; i++) result += split[i][0];
     return result;
   }
 

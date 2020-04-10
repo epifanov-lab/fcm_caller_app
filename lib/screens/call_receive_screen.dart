@@ -5,6 +5,7 @@ import 'package:fcmcallerapp/utils/ui_utils.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
 import '../theme.dart';
 
 class CallReceiveScreen extends StatefulWidget {
@@ -14,6 +15,8 @@ class CallReceiveScreen extends StatefulWidget {
 
 class _CallReceiveScreenState extends State<CallReceiveScreen>
     with SingleTickerProviderStateMixin {
+
+  User _user;
 
   Animation<int> _textAnimation;
   AnimationController _textAnimationController;
@@ -60,7 +63,7 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
 
   @override
   Widget build(BuildContext context) {
-    String name = ModalRoute.of(context).settings.arguments??STUB_USER;
+    _user = ModalRoute.of(context).settings.arguments??STUB_USER;
     return Scaffold(
       body: SafeArea(
         child: Column(
@@ -71,9 +74,9 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
                 child: Column(mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: 160),
-                    AvatarWidget(name, 96),
+                    AvatarWidget(_user.name, 96),
                     SizedBox(height: 24),
-                    Text(name, style: appTheme.textTheme.headline1),
+                    Text(_user.name, style: appTheme.textTheme.headline1),
                     SizedBox(height: 4),
                     Text(_splash, style: appTheme.textTheme.subtitle1),
                   ],
@@ -100,6 +103,9 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
     );
   }
 
-  void _cancelCall(BuildContext context) => Navigator.pop(context);
+  void _cancelCall(BuildContext context) {
+    wss.sendMessage('send answer', _user.id);
+    Navigator.pop(context);
+  }
 
 }

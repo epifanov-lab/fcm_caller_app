@@ -1,4 +1,4 @@
-import '../app_main.dart';
+import '../main.dart';
 
 class NamesGenerator {
   //TODO MOVE TO BACKEND

@@ -5,7 +5,7 @@ import 'package:fcmcallerapp/utils/ui_utils.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 
-import '../app_main.dart';
+import '../main.dart';
 import '../theme.dart';
 
 class CallSendScreen extends StatefulWidget {

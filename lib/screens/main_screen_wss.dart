@@ -6,7 +6,7 @@ import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../app_main.dart';
+import '../main.dart';
 import '../theme.dart';
 
 class MainScreenWss extends StatefulWidget {
@@ -14,36 +14,29 @@ class MainScreenWss extends StatefulWidget {
   _MainScreenWssState createState() => _MainScreenWssState();
 }
 
-class _MainScreenWssState extends State<MainScreenWss> with WidgetsBindingObserver {
+class _MainScreenWssState extends State<MainScreenWss> {
 
   User _user = STUB_USER;
   List<User> _allUsers = List();
 
-  StreamSubscription _subscription;
+  List<StreamSubscription> _subscriptions = List();
 
   @override
   void initState() {
     initialize();
-    WidgetsBinding.instance.addObserver(this);
     super.initState();
   }
 
   @override
   void dispose() {
-    WidgetsBinding.instance.removeObserver(this);
-    _subscription.cancel();
+    _subscriptions.forEach((subscription) => subscription.cancel());
     super.dispose();
-  }
-
-  @override
-  void didChangeAppLifecycleState(AppLifecycleState state) {
-    if (state == AppLifecycleState.resumed) initialize();
   }
 
   void initialize() {
     updateUser()
-        .then((user) => wss.sendMessage('user add', {'name': user.name, 'type': 'mobile'}))
-        .then((_) => _subscription = listenWsEvents());
+        .then((user) => wss.setUser(user))
+        .then((_) => _subscriptions.add(listenWsEvents()));
   }
 
   Future<User> updateUser() {
@@ -81,7 +74,7 @@ class _MainScreenWssState extends State<MainScreenWss> with WidgetsBindingObserv
           _allUsers = rawUsers.map((raw) => User.fromJson(raw)).toList()..remove(_user);
         });
       } else if (map['event'] == 'get call') {
-        Navigator.pushNamed(context, '/callReceive', arguments: map['data']['name']);
+        Navigator.pushNamed(context, '/callReceive', arguments: User.fromJson(map['data']));
       }
     });
   }
@@ -93,7 +86,7 @@ class _MainScreenWssState extends State<MainScreenWss> with WidgetsBindingObserv
 
   void _onTapUser(User from, User to)
       => wss.sendMessage('send call', to.id)
-      .then((_) => Navigator.pushNamed(context, '/callSend', arguments: _user))
+      .then((_) => Navigator.pushNamed(context, '/callSend', arguments: to))
       .catchError((error) { /* todo show error */ });
 
   @override

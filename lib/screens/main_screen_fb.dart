@@ -4,7 +4,7 @@ import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../app_main.dart';
+import '../main.dart';
 import '../theme.dart';
 
 class MainScreenFb extends StatefulWidget {

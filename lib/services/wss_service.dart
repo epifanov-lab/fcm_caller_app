@@ -3,10 +3,13 @@ import 'dart:convert';
 import 'dart:ui';
 
 import 'package:connectivity/connectivity.dart';
+import 'package:fcmcallerapp/entities/user.dart';
 import 'package:rxdart/rxdart.dart';
 import 'package:web_socket_channel/io.dart';
 
 class WssService {
+
+  User _user;
 
   final PublishSubject<AppLifecycleState> _lifecycleEvents;
   final Stream<ConnectivityResult> _connectivityEvents;
@@ -61,8 +64,9 @@ class WssService {
 
        _channels.distinct().listen((channel) {
          _updateStateMap('channel.hashCode', channel.hashCode);
-         _currentChannel = channel
-           ..stream.listen(
+         _currentChannel = channel;
+         if (_user != null) sendMessage('user add', {'name': _user.name, 'type': 'mobile'});
+         _currentChannel.stream.listen(
                    (message) => _receiveMessage(message),
                     onDone: () => _updateStateMap('channels_closed', ++_info['channels_closed']));
        });
@@ -101,6 +105,11 @@ class WssService {
     bool result = true;
     booleans.forEach((b) => result &= b);
     return result;
+  }
+
+  setUser(User user) {
+    sendMessage('user add', {'name': user.name, 'type': 'mobile'});
+    _user = user;
   }
 
 }
