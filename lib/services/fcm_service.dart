@@ -47,9 +47,9 @@ class FcmService {
         body: json.encode({
           'to': '/device/${to.token}',
           'data' : {
-            'type' : 'call',
+            'userType' : 'mobile',
             'body' : from.toJson(),
-            'title': from.name
+            'userName': from.name
           }
         })).then((response) => print('@@@@@ result: ${response.body}'))
         .catchError((error) => print('@@@@@ error: $error'));
@@ -66,7 +66,7 @@ class FcmService {
           "to": "/topics/calls",
           "collapse_key": "type_a",
           "data" : {
-            'type' : 'call',
+            'userType' : 'mobile',
             "body" : '',
             "title": 'Проверка связи!'
           }

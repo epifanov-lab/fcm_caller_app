@@ -36,10 +36,10 @@ public class CallReceiveActivity extends Activity {
 
     setContentView(R.layout.activity_caller);
 
-    String title = getIntent().getStringExtra("title");
+    String userName = getIntent().getStringExtra("userName");
     String body = getIntent().getStringExtra("body");
 
-    ((TextView) findViewById(R.id.tv_caller)).setText(title);
+    ((TextView) findViewById(R.id.tv_caller)).setText(userName);
 
     findViewById(R.id.btn_dismiss).setOnClickListener((v) -> dismiss());
     findViewById(R.id.btn_answer).setOnClickListener((v) -> answer());

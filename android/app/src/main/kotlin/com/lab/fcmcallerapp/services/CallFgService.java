@@ -40,21 +40,21 @@ public class CallFgService extends Service {
 
     registerPushAwakeChannel(this);
 
-    String title = intent.getStringExtra("title");
+    String userName = intent.getStringExtra("userName");
     String body = intent.getStringExtra("body");
 
     Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-      .setContentTitle(title)
+      .setContentTitle(userName)
       .setContentText(body)
       .setSmallIcon(R.drawable.ic_launcher_foreground)
       .setPriority(NotificationCompat.PRIORITY_HIGH)
       .setCategory(NotificationCompat.CATEGORY_CALL)
-      .setFullScreenIntent(obtainIntent(this, CALL_DEFAULT, title, body), true)
+      .setFullScreenIntent(obtainIntent(this, CALL_DEFAULT, userName, body), true)
       .build();
 
     startForeground(999, notification);
 
-    CommonUtils.startActivity(this, CallReceiveActivity.class, title, body);
+    CommonUtils.startActivity(this, CallReceiveActivity.class, userName, body);
 
     AudioManager.get().play(this, R.raw.simple_bell_7, 0.75f);
 
@@ -65,7 +65,7 @@ public class CallFgService extends Service {
                                             String extraTitle, String extraBody) {
     Intent intent = new Intent(context, CallReceiveActivity.class);
     Bundle bundle = new Bundle();
-    if (extraTitle != null) intent.putExtra("title", extraTitle);
+    if (extraTitle != null) intent.putExtra("userName", extraTitle);
     if (extraBody != null) intent.putExtra("body", extraTitle);
     bundle.putInt(CALL_COMMAND_KEY, code);
     return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT, bundle);

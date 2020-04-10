@@ -25,7 +25,7 @@ public class CommonUtils {
     Intent intent = new Intent(context, activityClass);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    if (extraTitle != null) intent.putExtra("title", extraTitle);
+    if (extraTitle != null) intent.putExtra("userName", extraTitle);
     if (extraBody != null) intent.putExtra("body", extraBody);
     context.startActivity(intent);
   }
