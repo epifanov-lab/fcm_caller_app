@@ -19,6 +19,8 @@ class _MainScreenWssState extends State<MainScreenWss> with WidgetsBindingObserv
   User _user = STUB_USER;
   List<User> _allUsers = List();
 
+  StreamSubscription _subscription;
+
   @override
   void initState() {
     initialize();
@@ -29,6 +31,7 @@ class _MainScreenWssState extends State<MainScreenWss> with WidgetsBindingObserv
   @override
   void dispose() {
     WidgetsBinding.instance.removeObserver(this);
+    _subscription.cancel();
     super.dispose();
   }
 
@@ -40,7 +43,7 @@ class _MainScreenWssState extends State<MainScreenWss> with WidgetsBindingObserv
   void initialize() {
     updateUser()
         .then((user) => wss.sendMessage('user add', {'name': user.name, 'type': 'mobile'}))
-        .then((_) => listenWsEvents());
+        .then((_) => _subscription = listenWsEvents());
   }
 
   Future<User> updateUser() {
@@ -69,8 +72,8 @@ class _MainScreenWssState extends State<MainScreenWss> with WidgetsBindingObserv
     return firestore.register(_user);
   }
 
-  void listenWsEvents() {
-    wss.data.listen((map) {
+  StreamSubscription listenWsEvents() {
+    return wss.data.listen((map) {
       if (map['event'] == 'get users list') {
         List rawUsers = (map['data']['push'] as List);
         rawUsers.addAll(map['data']['ws'] as List);
@@ -138,12 +141,13 @@ class _MainScreenWssState extends State<MainScreenWss> with WidgetsBindingObserv
 
   Widget _widgetEditableUserName(User user) {
     return InkWell(
-      /* todo change rename to wss */
       onTap: () => UiUtils.dialogEditText(context, _user.name)
           .then((result) {
             if (result != null) {
               setState(() => _user.name = result);
-              return firestore.rename(_user);
+              return firestore.rename(_user)
+                  .then((_) => wss.sendMessage('user remove', _user.id))
+                  .then((_) => wss.sendMessage('user add', {'name': user.name, 'type': 'mobile'}));
             } else return Future.value(null);
           }),
       child: Padding(

@@ -1,8 +1,11 @@
+import 'dart:async';
+
 import 'package:fcmcallerapp/entities/user.dart';
 import 'package:fcmcallerapp/utils/ui_utils.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/material.dart';
 
+import '../app_main.dart';
 import '../theme.dart';
 
 class CallSendScreen extends StatefulWidget {
@@ -19,10 +22,16 @@ class _CallSendScreenState extends State<CallSendScreen>
   final String _calling = 'вызов';
   String _splash = '';
 
+  StreamSubscription _subscription;
+
   @override
   void initState() {
     super.initState();
     startCallLabelAnimation();
+
+    _subscription = wss.data.listen((map) {
+      if (map['event'] == 'get answer') _cancelCall(context);
+    });
   }
 
   void startCallLabelAnimation() {
@@ -44,6 +53,7 @@ class _CallSendScreenState extends State<CallSendScreen>
   @override
   void dispose() {
     _textAnimationController.dispose();
+    _subscription.cancel();
     super.dispose();
   }
 
