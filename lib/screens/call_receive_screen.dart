@@ -1,3 +1,5 @@
+import 'package:audioplayers/audio_cache.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:fcmcallerapp/entities/user.dart';
 import 'package:fcmcallerapp/utils/ui_utils.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
@@ -16,6 +18,8 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
   Animation<int> _textAnimation;
   AnimationController _textAnimationController;
 
+  AudioPlayer _audioPlayer;
+
   final String _calling = 'вызывает';
   String _splash = '';
 
@@ -23,6 +27,19 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
   void initState() {
     super.initState();
     startCallLabelAnimation();
+    playSound();
+  }
+
+  @override
+  void dispose() {
+    _textAnimationController.dispose();
+    _audioPlayer.stop();
+    super.dispose();
+  }
+
+  Future playSound() async {
+    AudioCache cache = new AudioCache();
+    _audioPlayer = await cache.play('sounds/bell.mp3', volume: 0.75);
   }
 
   void startCallLabelAnimation() {
@@ -39,12 +56,6 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
         else if (status == AnimationStatus.dismissed) _textAnimationController.forward();
       });
     _textAnimationController.forward();
-  }
-
-  @override
-  void dispose() {
-    _textAnimationController.dispose();
-    super.dispose();
   }
 
   @override
@@ -90,4 +101,5 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
   }
 
   void _cancelCall(BuildContext context) => Navigator.pop(context);
+
 }
