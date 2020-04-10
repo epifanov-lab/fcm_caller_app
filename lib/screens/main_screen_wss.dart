@@ -161,12 +161,15 @@ class _MainScreenWssState extends State<MainScreenWss> {
   Widget _widgetUserContact(User user) {
     return InkWell(onTap: () => _onTapUser(_user, user),
             child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 16),
               child: Row(children: <Widget>[
-                SizedBox(width: 16),
                 AvatarWidget(user.name, 48),
                 SizedBox(width: 16),
-                Text(user.name, style: appTheme.textTheme.headline2,)
+                Text('${user.name}', style: appTheme.textTheme.headline2),
+                Expanded(
+                  child: Text('[${user.token == null ? 'wss' : 'push'}]', textAlign: TextAlign.end,
+                      style: appTheme.textTheme.headline2),
+                )
       ],),
             ),);
   }
