@@ -38,8 +38,12 @@ class WssService {
         _connectivityEvents = Connectivity().onConnectivityChanged {
     _currentChannel = _createWsChannel();
     _channels = BehaviorSubject.seeded(_currentChannel);
+
     _dataController = StreamController.broadcast();
-    data = _dataController.stream.map((event) => json.decode(event));
+    data = _dataController.stream
+        .map((event) => json.decode(event))
+        .map((event) => {'event': event[0], 'data': event[1]});
+
     states = BehaviorSubject.seeded(_info);
 
     _connectability = Observable.combineLatest([
@@ -79,7 +83,7 @@ class WssService {
 
   Future sendMessage(String event, dynamic data) {
     if (_currentChannel.closeCode == null) {
-      String message = json.encode({'event': event, 'data':data});
+      String message = json.encode([event, data]);
       _currentChannel.sink.add(message);
       print('ws >>> $event: $data');
       return Future.value(null);

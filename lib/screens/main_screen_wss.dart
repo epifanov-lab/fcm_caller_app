@@ -100,8 +100,8 @@ class _MainScreenWssState extends State<MainScreenWss> {
             Padding(
                 padding: EdgeInsets.only(top: 196),
                 child: _widgetUsersList()),
-            Positioned(bottom: 32, right: 32, child:
-            _widgetRefreshButton()),
+            Positioned(bottom: 32, right: 32,
+                child: _widgetRefreshButton()),
           ],
         ),
       ),);
