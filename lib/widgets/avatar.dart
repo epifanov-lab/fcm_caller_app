@@ -22,7 +22,10 @@ class AvatarWidget extends StatelessWidget {
     String result = '';
     var split = name.split(' ');
     if (split.length > 2) split.removeRange(2, split.length);
-    for (int i = 0; i < split.length; i++) result += split[i][0];
+    for (int i = 0; i < split.length; i++) {
+      if (split[i].isNotEmpty) result += split[i][0];
+    }
+
     return result;
   }
 

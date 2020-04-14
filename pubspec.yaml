@@ -16,6 +16,7 @@ dependencies:
   firebase_messaging: ^6.0.13
 
   audioplayers: ^0.13.2
+  twilio_programmable_video: ^0.3.0+1
 
   flutter:
     sdk: flutter
