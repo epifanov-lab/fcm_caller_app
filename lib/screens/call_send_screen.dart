@@ -16,10 +16,12 @@ class CallSendScreen extends StatefulWidget {
 class _CallSendScreenState extends State<CallSendScreen>
     with SingleTickerProviderStateMixin {
 
+  Map<String, dynamic> _arguments;
+
   Animation<int> _textAnimation;
   AnimationController _textAnimationController;
 
-  final String _calling = 'вызов';
+  final String _calling = 'вызываю';
   String _splash = '';
 
   StreamSubscription _subscription;
@@ -30,24 +32,17 @@ class _CallSendScreenState extends State<CallSendScreen>
     startCallLabelAnimation();
 
     _subscription = wss.data.listen((map) {
-      if (map['event'] == 'get answer') _cancelCall(context);
+      if (map['event'] == 'call:get answer') _onRecipientAnswered(context, map['data']);
     });
   }
 
-  void startCallLabelAnimation() {
-    _textAnimationController = AnimationController(duration: const Duration(milliseconds: 750), vsync: this);
-    _textAnimation = IntTween(begin: 0, end: _calling.length).animate(_textAnimationController)
-      ..addListener(() {
-        setState(() {
-          int index = _textAnimation.value;
-          _splash = _calling.replaceRange(index, index, '\u25CF');
-        });
-      })
-      ..addStatusListener((status) {
-        if (status == AnimationStatus.completed) _textAnimationController.reverse();
-        else if (status == AnimationStatus.dismissed) _textAnimationController.forward();
-      });
-    _textAnimationController.forward();
+  void _cancelCall(BuildContext context) {
+    wss.sendMessage('call:send cancel', null);
+    Navigator.pop(context);
+  }
+
+  void _onRecipientAnswered(BuildContext context, Map<String, dynamic> data) {
+    Navigator.pop(context, data);
   }
 
   @override
@@ -59,7 +54,7 @@ class _CallSendScreenState extends State<CallSendScreen>
 
   @override
   Widget build(BuildContext context) {
-    User user = ModalRoute.of(context).settings.arguments??STUB_USER;
+    _arguments = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         body: SafeArea(
           child: Column(
@@ -70,9 +65,9 @@ class _CallSendScreenState extends State<CallSendScreen>
                   child: Column(mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
                       SizedBox(height: 160),
-                      AvatarWidget(user.name, 96),
+                      AvatarWidget(_arguments['name'], 96),
                       SizedBox(height: 24),
-                      Text(user.name, style: appTheme.textTheme.headline1),
+                      Text(_arguments['name'], style: appTheme.textTheme.headline1),
                       SizedBox(height: 4),
                       Text(_splash, style: appTheme.textTheme.subtitle1),
                     ],
@@ -91,5 +86,20 @@ class _CallSendScreenState extends State<CallSendScreen>
     );
   }
 
-  void _cancelCall(BuildContext context) => Navigator.pop(context);
+  void startCallLabelAnimation() {
+    _textAnimationController = AnimationController(duration: const Duration(milliseconds: 750), vsync: this);
+    _textAnimation = IntTween(begin: 0, end: _calling.length).animate(_textAnimationController)
+      ..addListener(() {
+        setState(() {
+          int index = _textAnimation.value;
+          _splash = _calling.replaceRange(index, index, '\u25CF');
+        });
+      })
+      ..addStatusListener((status) {
+        if (status == AnimationStatus.completed) _textAnimationController.reverse();
+        else if (status == AnimationStatus.dismissed) _textAnimationController.forward();
+      });
+    _textAnimationController.forward();
+  }
+
 }

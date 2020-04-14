@@ -2,7 +2,7 @@ import 'dart:math';
 
 import 'package:fcmcallerapp/screens/call_send_screen.dart';
 import 'package:fcmcallerapp/screens/call_receive_screen.dart';
-import 'package:fcmcallerapp/screens/main_screen_wss.dart';
+import 'package:fcmcallerapp/screens/main_screen.dart';
 import 'package:fcmcallerapp/services/firestore_service.dart';
 import 'package:fcmcallerapp/services/wss_service.dart';
 import 'package:flutter/cupertino.dart';
@@ -51,8 +51,8 @@ class _FcmCallerAppState extends State<FcmCallerApp> with WidgetsBindingObserver
       theme: appTheme,
       initialRoute: '/',
       routes: {
-        '/': (context) => MainScreenWss(),
-        '/mainWss': (context) => MainScreenWss(),
+        '/': (context) => MainScreen(),
+        '/mainWss': (context) => MainScreen(),
         '/mainFb': (context) => MainScreenFb(),
         '/callSend': (context) => CallSendScreen(),
         '/callReceive': (context) => CallReceiveScreen(),

@@ -9,12 +9,12 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../theme.dart';
 
-class MainScreenWss extends StatefulWidget {
+class MainScreen extends StatefulWidget {
   @override
-  _MainScreenWssState createState() => _MainScreenWssState();
+  _MainScreenState createState() => _MainScreenState();
 }
 
-class _MainScreenWssState extends State<MainScreenWss> {
+class _MainScreenState extends State<MainScreen> {
 
   User _user = STUB_USER;
   List<User> _allUsers = List();
@@ -73,8 +73,9 @@ class _MainScreenWssState extends State<MainScreenWss> {
         setState(() {
           _allUsers = rawUsers.map((raw) => User.fromJson(raw)).toList()..remove(_user);
         });
-      } else if (map['event'] == 'get call') {
-        Navigator.pushNamed(context, '/callReceive', arguments: User.fromJson(map['data']));
+      } else if (map['event'] == 'call:get call') {
+        /* todo получение roomId */
+        Navigator.pushNamed(context, '/callReceive', arguments: map['data']);
       }
     });
   }
@@ -85,7 +86,7 @@ class _MainScreenWssState extends State<MainScreenWss> {
   }
 
   void _onTapUser(User from, User to)
-      => wss.sendMessage('send call', to.id)
+      => wss.sendMessage('call:send call', to.id)
       .then((_) => Navigator.pushNamed(context, '/callSend', arguments: to))
       .catchError((error) { /* todo show error */ });
 
