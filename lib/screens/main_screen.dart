@@ -18,7 +18,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  static const platform = const MethodChannel('com.lab.fcmcallerapp.channel');
+  static const _methodChannel = const MethodChannel('com.lab.fcmcallerapp.channel');
 
   User _user = STUB_USER;
   List<User> _allUsers = List();
@@ -32,6 +32,17 @@ class _MainScreenState extends State<MainScreen> {
         .then((_) => _subscriptions.add(_listenWsEvents()))
         .then((_) => _checkAndroidIntentData());
 
+    _methodChannel.setMethodCallHandler((call) {
+      var args = call.arguments;
+      print('@@@@@ f.channel receve: ${call.method}: $args');
+      switch (call.method) {
+        case 'onNewIntent':
+          _startCallReceiveFromIntent(args);
+          break;
+      }
+      return Future.value(null);
+    });
+
     super.initState();
   }
 
@@ -43,18 +54,20 @@ class _MainScreenState extends State<MainScreen> {
 
   void _checkAndroidIntentData() {
     if (Platform.isAndroid) {
-      platform.invokeMapMethod('get_intent_data')
+      _methodChannel.invokeMapMethod('get_intent_data')
           .then((result) {
             print('get_intent_data: $result');
-            if (result['event'] == 'get call') {
-              var user = User(result['id'], result['token'], result['type'], result['name']);
-              var encode = json.encode([result['event'], user.toMap(), result['roomId']]);
-              List args = json.decode(encode) as List;
-              Navigator.pushNamed(context, '/callReceive', arguments: args);
-              platform.invokeMapMethod('stop_CallFgService');
-            }
+            if (result['event'] == 'get call') _startCallReceiveFromIntent(result);
           });
     }
+  }
+
+  Future _startCallReceiveFromIntent(Map data) {
+    var user = User(data['id'], data['token'], data['type'], data['name']);
+    var encode = json.encode([data['event'], user.toMap(), data['roomId']]);
+    List args = json.decode(encode) as List;
+    _methodChannel.invokeMapMethod('stop_CallFgService');
+    return Navigator.pushNamed(context, '/callReceive', arguments: args);
   }
 
   Future<User> _updateUser() {

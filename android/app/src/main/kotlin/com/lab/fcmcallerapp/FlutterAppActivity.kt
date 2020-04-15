@@ -32,19 +32,18 @@ class FlutterAppActivity: FlutterActivity(), MethodCallHandler {
 
     override fun onNewIntent(intent: Intent) {
         super.onNewIntent(intent)
-        println("@@@@@ onNewIntent: ${intent.extras}")
-        /* TODO IMPLEMENT */
+        println("@@@@@ A.onNewIntent: ${intent.extras}")
+        mChannel.invokeMethod("onNewIntent", getArgsMapFromIntent(intent))
     }
 
-    fun getIntentData(result: MethodChannel.Result) {
+    private fun getIntentData(result: MethodChannel.Result) {
         println("@@@@@ getIntentData")
-        val data = HashMap<String, String>()
-        intent?.extras?.keySet()?.forEach{ key ->
-            run {
-            println("@@@@@3 " + key + ": " + data[key])
-            data[key] = intent.getStringExtra(key)
-            } }
-        result.success(data)
+        result.success(getArgsMapFromIntent(intent))
     }
 
+    private fun getArgsMapFromIntent(intent: Intent) : Map<String, String> {
+        val data = HashMap<String, String>()
+        intent?.extras?.keySet()?.forEach{ key -> data[key] = intent.getStringExtra(key) }
+        return data
+    }
 }
