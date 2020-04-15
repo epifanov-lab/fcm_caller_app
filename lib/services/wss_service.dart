@@ -19,7 +19,7 @@ class WssService {
   IOWebSocketChannel _currentChannel;
 
   StreamController<String> _dataController;
-  Stream<Map<String, dynamic>> data;
+  Stream<List<dynamic>> data;
 
   Subject<Map<String, dynamic>> states;
   final Map<String, dynamic> _info = {
@@ -41,8 +41,8 @@ class WssService {
 
     _dataController = StreamController.broadcast();
     data = _dataController.stream
-        .map((event) => json.decode(event))
-        .map((event) => {'event': event[0], 'data': event[1]});
+        .map((event) => json.decode(event) as List<dynamic>);
+        //.map((event) => {'event': event[0], 'data': event[1]});
 
     states = BehaviorSubject.seeded(_info);
 

@@ -7,12 +7,12 @@ import 'package:flutter/material.dart';
 import '../main.dart';
 import '../theme.dart';
 
-class MainScreenFb extends StatefulWidget {
+class MainScreenOld extends StatefulWidget {
   @override
-  _MainScreenFbState createState() => _MainScreenFbState();
+  _MainScreenOldState createState() => _MainScreenOldState();
 }
 
-class _MainScreenFbState extends State<MainScreenFb> {
+class _MainScreenOldState extends State<MainScreenOld> {
 
   User _user = STUB_USER;
   List<User> _allUsers = List();

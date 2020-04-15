@@ -1,6 +1,5 @@
 import 'dart:async';
 
-import 'package:fcmcallerapp/entities/user.dart';
 import 'package:fcmcallerapp/utils/ui_utils.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/material.dart';
@@ -31,17 +30,17 @@ class _CallSendScreenState extends State<CallSendScreen>
     super.initState();
     startCallLabelAnimation();
 
-    _subscription = wss.data.listen((map) {
-      if (map['event'] == 'call:get answer') _onRecipientAnswered(context, map['data']);
+    _subscription = wss.data.listen((data) {
+      if (data[0] == 'call:get answer') _onRecipientAnswered(context, data);
     });
   }
 
   void _cancelCall(BuildContext context) {
-    wss.sendMessage('call:send cancel', null);
+    wss.sendMessage('call:send cancel', _arguments['id']);
     Navigator.pop(context);
   }
 
-  void _onRecipientAnswered(BuildContext context, Map<String, dynamic> data) {
+  void _onRecipientAnswered(BuildContext context, List data) {
     Navigator.pop(context, data);
   }
 

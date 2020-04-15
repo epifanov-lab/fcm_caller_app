@@ -67,16 +67,20 @@ class _MainScreenState extends State<MainScreen> {
 
   StreamSubscription listenWsEvents() {
     return wss.data.listen((map) {
-      if (map['event'] == 'get users list') {
-        List rawUsers = (map['data']['push'] as List);
-        rawUsers.addAll(map['data']['ws'] as List);
+
+      if (map[0] == 'get users list') {
+        List rawUsers = (map[1]['push'] as List);
+        rawUsers.addAll(map[1]['ws'] as List);
         setState(() {
           _allUsers = rawUsers.map((raw) => User.fromJson(raw)).toList()..remove(_user);
         });
-      } else if (map['event'] == 'call:get call') {
-        /* todo получение roomId */
-        Navigator.pushNamed(context, '/callReceive', arguments: map['data']);
-      }
+
+      } else if (map[0] == 'call:get call') {
+        Navigator.pushNamed(context, '/callReceive', arguments: map);
+
+      } else if (map[0] == 'twilio:token') {
+      Navigator.pushNamed(context, '/twilioRoom', arguments: map);
+    }
     });
   }
 
@@ -87,7 +91,8 @@ class _MainScreenState extends State<MainScreen> {
 
   void _onTapUser(User from, User to)
       => wss.sendMessage('call:send call', to.id)
-      .then((_) => Navigator.pushNamed(context, '/callSend', arguments: to))
+      .then((_) => Navigator.pushNamed(context, '/callSend',
+          arguments: {'id': to.id, 'name': to.name}))
       .catchError((error) { /* todo show error */ });
 
   @override
@@ -171,7 +176,7 @@ class _MainScreenState extends State<MainScreen> {
                   child: Text('[${user.token == null ? 'wss' : 'push'}]', textAlign: TextAlign.end,
                       style: appTheme.textTheme.headline2),
                 )
-      ],),
+              ],),
             ),);
   }
 

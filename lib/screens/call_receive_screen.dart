@@ -17,7 +17,7 @@ class CallReceiveScreen extends StatefulWidget {
 class _CallReceiveScreenState extends State<CallReceiveScreen>
     with SingleTickerProviderStateMixin {
 
-  Map<String, dynamic> _arguments;
+  List<dynamic> _arguments;
 
   Animation<int> _textAnimation;
   AnimationController _textAnimationController;
@@ -36,7 +36,7 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
     playSound();
 
     _subscription = wss.data.listen((map) {
-      if (map['event'] == 'call:get cancel') _onRecipientCancelled(context);
+      if (map[0] == 'call:get cancel') _onRecipientCancelled(context);
     });
   }
 
@@ -49,12 +49,12 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
   }
 
   void _cancelCall(BuildContext context) {
-    wss.sendMessage('call:send cancel', _arguments['roomId']);
+    wss.sendMessage('call:send cancel', _arguments[2]);
     Navigator.pop(context);
   }
 
   void _answerCall(BuildContext context) {
-    wss.sendMessage('call:send answer', _arguments['roomId']);
+    wss.sendMessage('call:send answer', _arguments[2]);
     Navigator.pop(context);
   }
 
@@ -80,9 +80,9 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
                 child: Column(mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
                     SizedBox(height: 160),
-                    AvatarWidget(_arguments['name'], 96),
+                    AvatarWidget(_arguments[1]['name'], 96),
                     SizedBox(height: 24),
-                    Text(_arguments['name'], style: appTheme.textTheme.headline1),
+                    Text(_arguments[1]['name'], style: appTheme.textTheme.headline1),
                     SizedBox(height: 4),
                     Text(_splash, style: appTheme.textTheme.subtitle1),
                   ],
