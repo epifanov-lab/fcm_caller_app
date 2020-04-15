@@ -1,10 +1,13 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
 import 'package:fcmcallerapp/entities/user.dart';
 import 'package:fcmcallerapp/utils/ui_utils.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../main.dart';
 import '../theme.dart';
@@ -15,6 +18,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
+  static const platform = const MethodChannel('com.lab.fcmcallerapp.channel');
 
   User _user = STUB_USER;
   List<User> _allUsers = List();
@@ -23,7 +27,11 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   void initState() {
-    initialize();
+    _updateUser()
+        .then((user) => wss.setUser(user))
+        .then((_) => _subscriptions.add(_listenWsEvents()))
+        .then((_) => _checkAndroidIntentData());
+
     super.initState();
   }
 
@@ -33,23 +41,33 @@ class _MainScreenState extends State<MainScreen> {
     super.dispose();
   }
 
-  void initialize() {
-    updateUser()
-        .then((user) => wss.setUser(user))
-        .then((_) => _subscriptions.add(listenWsEvents()));
+  void _checkAndroidIntentData() {
+    if (Platform.isAndroid) {
+      platform.invokeMapMethod('get_intent_data')
+          .then((result) {
+            print('get_intent_data: $result');
+            if (result['event'] == 'get call') {
+              var user = User(result['id'], result['token'], result['type'], result['name']);
+              var encode = json.encode([result['event'], user.toMap(), result['roomId']]);
+              List args = json.decode(encode) as List;
+              Navigator.pushNamed(context, '/callReceive', arguments: args);
+              platform.invokeMapMethod('stop_CallFgService');
+            }
+          });
+    }
   }
 
-  Future<User> updateUser() {
+  Future<User> _updateUser() {
     return fcm.initialize().then((token) {
       print('@@@@@ fcmService.initialize: $token');
       return firestore.getUsers().then((users) {
-        return checkIsRegistered(token, users) 
-            ? Future.value(_user) : registerNewUser(token);
+        return _checkIsRegistered(token, users)
+            ? Future.value(_user) : _registerNewUser(token);
       });
     });
   }
 
-  bool checkIsRegistered(String token, List<User> users) {
+  bool _checkIsRegistered(String token, List<User> users) {
     bool result = false;
     users.forEach((user) {
       if (token == user.token) {
@@ -60,12 +78,12 @@ class _MainScreenState extends State<MainScreen> {
     return result;
   }
 
-  Future<User> registerNewUser(String token) {
+  Future<User> _registerNewUser(String token) {
     setState(() => _user = User.generate(token));
     return firestore.register(_user);
   }
 
-  StreamSubscription listenWsEvents() {
+  StreamSubscription _listenWsEvents() {
     return wss.data.listen((map) {
 
       if (map[0] == 'get users list') {
@@ -84,7 +102,7 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
-  Future<void> refresh() {
+  Future<void> _refresh() {
     return wss.sendMessage('get users list', null)
         .catchError((error) { /* todo show error */ });
   }
@@ -194,7 +212,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget _widgetRefreshButton() {
     return UiUtils.widgetCircleButton(56, colorAccent,
       'assets/icons/ic_refresh.png', 2.2, Colors.white,
-      () => refresh());
+      () => _refresh());
   }
 
 }

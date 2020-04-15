@@ -38,10 +38,8 @@ public class FcmService extends FirebaseMessagingService {
   }
 
   private void startCallFgService(Map<String, String> data) {
-    System.out.println("@@@@@ a.FcmService.startCallFgService");
     Intent intent = new Intent(this, CallFgService.class);
-    intent.putExtra("userName", data.get("userName"));
-    intent.putExtra("body", data.get("body"));
+    data.keySet().forEach((key) -> intent.putExtra(key, data.get(key)));
     ContextCompat.startForegroundService(this, intent);
   }
 

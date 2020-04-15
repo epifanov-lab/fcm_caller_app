@@ -53,8 +53,6 @@ class _FcmCallerAppState extends State<FcmCallerApp> with WidgetsBindingObserver
       initialRoute: '/',
       routes: {
         '/': (context) => MainScreen(),
-        '/mainWss': (context) => MainScreen(),
-        '/mainFb': (context) => MainScreenOld(),
         '/callSend': (context) => CallSendScreen(),
         '/callReceive': (context) => CallReceiveScreen(),
         '/twilioRoom': (context) => TwilioRoomPage()

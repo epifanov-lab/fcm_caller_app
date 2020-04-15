@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.lab.fcmcallerapp.CallReceiveActivity;
+import com.lab.fcmcallerapp.FlutterAppActivity;
 import com.lab.fcmcallerapp.R;
 import com.lab.fcmcallerapp.utils.AudioManager;
 import com.lab.fcmcallerapp.utils.CommonUtils;
@@ -40,34 +41,33 @@ public class CallFgService extends Service {
 
     registerPushAwakeChannel(this);
 
-    String userName = intent.getStringExtra("userName");
+    String name = intent.getStringExtra("name");
     String body = intent.getStringExtra("body");
 
     Notification notification = new NotificationCompat.Builder(this, CHANNEL_ID)
-      .setContentTitle(userName)
+      .setContentTitle(name)
       .setContentText(body)
       .setSmallIcon(R.drawable.ic_launcher_foreground)
       .setPriority(NotificationCompat.PRIORITY_HIGH)
       .setCategory(NotificationCompat.CATEGORY_CALL)
-      .setFullScreenIntent(obtainIntent(this, CALL_DEFAULT, userName, body), true)
+      .setFullScreenIntent(obtainIntent(this, CALL_DEFAULT, intent), true)
       .build();
 
     startForeground(999, notification);
 
-    CommonUtils.startActivity(this, CallReceiveActivity.class, userName, body);
+    CommonUtils.startActivity(this, FlutterAppActivity.class, intent);
 
     AudioManager.get().play(this, R.raw.simple_bell_7, 0.75f);
 
     return START_NOT_STICKY;
   }
 
-  private static PendingIntent obtainIntent(Context context, int code,
-                                            String extraTitle, String extraBody) {
-    Intent intent = new Intent(context, CallReceiveActivity.class);
+  private static PendingIntent obtainIntent(Context context, int code, Intent transitIntent) {
+    Intent intent = new Intent(context, FlutterAppActivity.class);
     Bundle bundle = new Bundle();
-    if (extraTitle != null) intent.putExtra("userName", extraTitle);
-    if (extraBody != null) intent.putExtra("body", extraTitle);
     bundle.putInt(CALL_COMMAND_KEY, code);
+    transitIntent.getExtras().keySet()
+      .forEach((key) -> intent.putExtra(key, transitIntent.getStringExtra(key)));
     return PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT, bundle);
   }
 

@@ -17,16 +17,17 @@ public class CommonUtils {
   }
 
   public static void startActivity(Context context, Class activityClass) {
-    startActivity(context, activityClass, null, null);
+    startActivity(context, activityClass, null);
   }
 
   public static void startActivity(Context context, Class activityClass,
-                                   String extraTitle, String extraBody) {
+                                   Intent transitIntent) {
     Intent intent = new Intent(context, activityClass);
     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-    if (extraTitle != null) intent.putExtra("userName", extraTitle);
-    if (extraBody != null) intent.putExtra("body", extraBody);
+    for (String key : transitIntent.getExtras().keySet()) {
+      intent.putExtra(key, transitIntent.getStringExtra(key));
+    }
     context.startActivity(intent);
   }
 

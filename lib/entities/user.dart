@@ -26,7 +26,9 @@ class User {
 
   User.stub() : this( 'stub-id', 'stub-token', 'stub-type', '... ...');
 
-  String toJson() => json.encode({'id': id, 'token': token, 'type': type, 'name': name});
+  String toJson() => json.encode(toMap());
+
+  Map<String, dynamic> toMap() => {'id': id, 'token': token, 'type': type, 'name': name};
 
   static String _genDocId(String token) {
     return '${Platform.operatingSystem}-${token.hashCode}';
