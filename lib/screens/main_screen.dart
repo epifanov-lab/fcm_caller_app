@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:fcmcallerapp/entities/user.dart';
 import 'package:fcmcallerapp/utils/ui_utils.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
+import 'package:fcmcallerapp/widgets/wss_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -133,6 +134,7 @@ class _MainScreenState extends State<MainScreen> {
       body: SafeArea(
         child: Stack(
           children: <Widget>[
+            Positioned(right: 0, child: WssStatusBar(wss.states)),
             _widgetTopUser(),
             Padding(
                 padding: EdgeInsets.only(top: 196),

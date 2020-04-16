@@ -4,6 +4,7 @@ import 'package:audioplayers/audio_cache.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:fcmcallerapp/utils/ui_utils.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
+import 'package:fcmcallerapp/widgets/wss_status_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -72,39 +73,44 @@ class _CallReceiveScreenState extends State<CallReceiveScreen>
     _arguments = ModalRoute.of(context).settings.arguments;
     return Scaffold(
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        child: Stack(
           children: <Widget>[
-            Container(
-              child: Center(
-                child: Column(mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    SizedBox(height: 160),
-                    AvatarWidget(_arguments[1]['name'], 96),
-                    SizedBox(height: 24),
-                    Text(_arguments[1]['name'], style: appTheme.textTheme.headline1),
-                    SizedBox(height: 4),
-                    Text(_splash, style: appTheme.textTheme.subtitle1),
-                  ],
+            Positioned(right: 0, child: WssStatusBar(wss.states)),
+            Column(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: <Widget>[
+                Container(
+                  child: Center(
+                    child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        SizedBox(height: 160),
+                        AvatarWidget(_arguments[1]['name'], 96),
+                        SizedBox(height: 24),
+                        Text(_arguments[1]['name'], style: appTheme.textTheme.headline1),
+                        SizedBox(height: 4),
+                        Text(_splash, style: appTheme.textTheme.subtitle1),
+                      ],
+                    ),
+                  ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(48),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: <Widget>[
-                  UiUtils.widgetCircleButton(56, colorBcgCancel,
-                      'assets/icons/ic_cancel.png', 2, Colors.white,
-                          () => _cancelCall(context)),
-                  UiUtils.widgetCircleButton(56, colorBcgAccept,
-                      'assets/icons/ic_call_answer.png', 2, Colors.white,
-                          () => _answerCall(context)),
-                ],
-              ),
+                Padding(
+                  padding: const EdgeInsets.all(48),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: <Widget>[
+                      UiUtils.widgetCircleButton(56, colorBcgCancel,
+                          'assets/icons/ic_cancel.png', 2, Colors.white,
+                              () => _cancelCall(context)),
+                      UiUtils.widgetCircleButton(56, colorBcgAccept,
+                          'assets/icons/ic_call_answer.png', 2, Colors.white,
+                              () => _answerCall(context)),
+                    ],
+                  ),
+                ),
+              ],
             ),
           ],
-        ),
+        )
       ),
     );
   }

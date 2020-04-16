@@ -35,7 +35,7 @@ final ThemeData appTheme = ThemeData(
       headline2: TextStyle(fontSize: 20.0, fontWeight: FontWeight.w600),
       subtitle1: TextStyle(fontSize: 16.0, fontWeight: FontWeight.bold),
       subtitle2: TextStyle(fontSize: 14.0),
-      caption: TextStyle(fontSize: 10.0),
+      caption: TextStyle(fontSize: 12.0),
     ).apply(
         bodyColor: colorText,
         displayColor: colorText

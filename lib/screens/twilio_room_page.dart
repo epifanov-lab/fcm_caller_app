@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:fcmcallerapp/utils/ui_utils.dart';
+import 'package:fcmcallerapp/widgets/wss_status_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:twilio_programmable_video/twilio_programmable_video.dart';
@@ -132,6 +133,7 @@ class _TwilioRoomPageState extends State<TwilioRoomPage> {
                   'assets/icons/ic_call_end.png', 1.5, Colors.white,
                       () => _cancelCall(context)),
             ),
+            Positioned(right: 0, child: WssStatusBar(wss.states)),
           ],
         )
       ));

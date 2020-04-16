@@ -26,7 +26,7 @@ class WssService {
     'lifecycle': AppLifecycleState.detached,
     'connectivity': ConnectivityResult.none,
     'connectability': false,
-    'channel.hashCode': null,
+    'connected': false,
     'channels_closed': 0
   };
 
@@ -48,15 +48,15 @@ class WssService {
 
     _connectability = Observable.combineLatest([
       _lifecycleEvents.debounceTime(new Duration(milliseconds: 500))
-          .doOnEach((n) => _updateStateMap('lifecycle', n.value))
+          .doOnEach((n) => _updateStateMapByKey('lifecycle', n.value))
           .map((state) => state == AppLifecycleState.resumed),
       Observable(_connectivityEvents).debounceTime(new Duration(milliseconds: 1000))
-          .doOnEach((n) => _updateStateMap('connectivity', n.value))
+          .doOnEach((n) => _updateStateMapByKey('connectivity', n.value))
           .map((state) => (state == ConnectivityResult.mobile || state == ConnectivityResult.wifi))
     ], (states) => _concatBooleans(states));
 
        _connectability.listen((state) {
-         _updateStateMap('connectability', state);
+         _updateStateMapByKey('connectability', state);
          if (state) {
            if (_currentChannel.closeCode != null)
              _channels.add(_createWsChannel());
@@ -67,17 +67,22 @@ class WssService {
        });
 
        _channels.distinct().listen((channel) {
-         _updateStateMap('channel.hashCode', channel.hashCode);
          _currentChannel = channel;
-         if (_user != null) sendMessage('user add', {'name': _user.name, 'type': 'mobile'});
+         _updateStateMapByKey('connected', true);
          _currentChannel.stream.listen(
                    (message) => _receiveMessage(message),
-                    onDone: () => _updateStateMap('channels_closed', ++_info['channels_closed']));
+                    onDone: () {
+                     _updateStateMap({
+                       'connected': false,
+                       'channels_closed': ++_info['channels_closed']
+                     });
+                    });
+         if (_user != null) sendMessage('user add', {'name': _user.name, 'type': 'mobile'});
        });
   }
 
   void _receiveMessage(message) {
-    print('ws <<< $message');
+    print('@@@@@ WSS receive: <<< $message');
     _dataController.add(message);
   }
 
@@ -85,14 +90,22 @@ class WssService {
     if (_currentChannel.closeCode == null) {
       String message = json.encode([event, data]);
       _currentChannel.sink.add(message);
-      print('ws >>> $event: $data');
+      print('@@@@@ WSS send: >>> $event: $data');
       return Future.value(null);
     } else return Future.error('Send message to ws failed. Channel is closed.');
   }
 
-  void _updateStateMap(String key, dynamic value) {
-    print('wss: state changes: $key = $value');
+  void _updateStateMapByKey(String key, dynamic value) {
+    print('@@@@@ WSS state change: $key = $value');
     _info[key] = value;
+    states.add(_info);
+  }
+
+  void _updateStateMap(Map<String, dynamic> map) {
+    print('@@@@@ WSS state change: $map');
+    map.keys.forEach((key) {
+      _info[key] = map[key];
+    });
     states.add(_info);
   }
 

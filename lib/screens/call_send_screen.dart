@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:fcmcallerapp/utils/ui_utils.dart';
 import 'package:fcmcallerapp/widgets/avatar.dart';
+import 'package:fcmcallerapp/widgets/wss_status_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../main.dart';
@@ -56,28 +57,33 @@ class _CallSendScreenState extends State<CallSendScreen>
     _arguments = ModalRoute.of(context).settings.arguments;
     return Scaffold(
         body: SafeArea(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          child: Stack(
             children: <Widget>[
-              Container(
-                child: Center(
-                  child: Column(mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      SizedBox(height: 160),
-                      AvatarWidget(_arguments['name'], 96),
-                      SizedBox(height: 24),
-                      Text(_arguments['name'], style: appTheme.textTheme.headline1),
-                      SizedBox(height: 4),
-                      Text(_splash, style: appTheme.textTheme.subtitle1),
-                    ],
+              Positioned(right: 0, child: WssStatusBar(wss.states)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  Container(
+                    child: Center(
+                      child: Column(mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          SizedBox(height: 160),
+                          AvatarWidget(_arguments['name'], 96),
+                          SizedBox(height: 24),
+                          Text(_arguments['name'], style: appTheme.textTheme.headline1),
+                          SizedBox(height: 4),
+                          Text(_splash, style: appTheme.textTheme.subtitle1),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom: 32),
-                child: UiUtils.widgetCircleButton(56, colorBcgCancel,
-                       'assets/icons/ic_call_end.png', 1.5, Colors.white,
-                       () => _cancelCall(context)),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 32),
+                    child: UiUtils.widgetCircleButton(56, colorBcgCancel,
+                        'assets/icons/ic_call_end.png', 1.5, Colors.white,
+                            () => _cancelCall(context)),
+                  ),
+                ],
               ),
             ],
           ),
