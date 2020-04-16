@@ -25,20 +25,23 @@ class FcmService {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("@@@@@ f.FcmService onMessage: $message");
+        var user = User(message['id'], message['token'], message['type'], message['name']);
         if (Platform.isIOS)
-          Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
+          Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],user.toMap(),message['id']]);
       },
 
       onLaunch: (Map<String, dynamic> message) async {
         print("@@@@@ f.FcmService onLaunch: $message");
+        var user = User(message['id'], message['token'], message['type'], message['name']);
         if (Platform.isIOS)
-          Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
+          Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],user.toMap(),message['id']]);
         },
 
       onResume: (Map<String, dynamic> message) async {
         print("@@@@@ f.FcmService onResume: $message");
+        var user = User(message['id'], message['token'], message['type'], message['name']);
         if (Platform.isIOS)
-          Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
+          Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],user.toMap(),message['id']]);
         },
 
       onBackgroundMessage: _onBackgroundMessage
