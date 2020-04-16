@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 
 import 'package:fcmcallerapp/entities/user.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
@@ -24,17 +25,20 @@ class FcmService {
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("@@@@@ f.FcmService onMessage: $message");
-        Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
+        if (Platform.isIOS)
+          Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
       },
 
       onLaunch: (Map<String, dynamic> message) async {
         print("@@@@@ f.FcmService onLaunch: $message");
-        Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
+        if (Platform.isIOS)
+          Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
         },
 
       onResume: (Map<String, dynamic> message) async {
         print("@@@@@ f.FcmService onResume: $message");
-        Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
+        if (Platform.isIOS)
+          Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
         },
 
       onBackgroundMessage: _onBackgroundMessage

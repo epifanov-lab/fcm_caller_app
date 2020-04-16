@@ -12,7 +12,7 @@ class AvatarWidget extends StatelessWidget {
   final Function _onTap;
 
   AvatarWidget(this._name, this._size, { onTap = _stubFunction })
-      : _initials = _getNameInitials(_name),
+      : _initials = _name != null ? _getNameInitials(_name) : '..',
         _colorIndex = _calcColorIndex(_name),
         _onTap = onTap;
 

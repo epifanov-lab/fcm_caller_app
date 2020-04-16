@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 
 import 'package:fcmcallerapp/entities/user.dart';
@@ -37,7 +36,7 @@ class _MainScreenState extends State<MainScreen> {
       print('@@@@@ f.channel receve: ${call.method}: $args');
       switch (call.method) {
         case 'onNewIntent':
-          _startCallReceiveFromIntent(args);
+          if (args['event'] == 'get call') _startCallReceiveFromIntent(args);
           break;
       }
       return Future.value(null);
@@ -63,11 +62,10 @@ class _MainScreenState extends State<MainScreen> {
   }
 
   Future _startCallReceiveFromIntent(Map data) {
-    var user = User(data['id'], data['token'], data['type'], data['name']);
-    var encode = json.encode([data['event'], user.toMap(), data['roomId']]);
-    List args = json.decode(encode) as List;
     _methodChannel.invokeMapMethod('stop_CallFgService');
-    return Navigator.pushNamed(context, '/callReceive', arguments: args);
+    var user = User(data['id'], data['token'], data['type'], data['name']);
+    return Navigator.pushNamed(context, '/callReceive',
+        arguments: [data['event'], user.toMap(), data['roomId']]);
   }
 
   Future<User> _updateUser() {
@@ -98,20 +96,21 @@ class _MainScreenState extends State<MainScreen> {
 
   StreamSubscription _listenWsEvents() {
     return wss.data.listen((map) {
+      switch(map[0]) {
+        case 'get users list':
+          List rawUsers = (map[1]['push'] as List);
+          rawUsers.addAll(map[1]['ws'] as List);
+          setState(() => _allUsers = rawUsers.map((raw) => User.fromJson(raw)).toList()..remove(_user));
+          break;
 
-      if (map[0] == 'get users list') {
-        List rawUsers = (map[1]['push'] as List);
-        rawUsers.addAll(map[1]['ws'] as List);
-        setState(() {
-          _allUsers = rawUsers.map((raw) => User.fromJson(raw)).toList()..remove(_user);
-        });
+        case 'call:get call':
+          Navigator.pushNamed(context, '/callReceive', arguments: map);
+          break;
 
-      } else if (map[0] == 'call:get call') {
-        Navigator.pushNamed(context, '/callReceive', arguments: map);
-
-      } else if (map[0] == 'twilio:token') {
-      Navigator.pushNamed(context, '/twilioRoom', arguments: map);
-    }
+        case 'twilio:token':
+          Navigator.pushNamed(context, '/twilioRoom', arguments: map);
+          break;
+      }
     });
   }
 
