@@ -126,7 +126,7 @@ packages:
       name: firebase
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "7.2.1"
+    version: "7.3.0"
   firebase_core:
     dependency: transitive
     description:
@@ -349,7 +349,7 @@ packages:
       name: twilio_programmable_video
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.3.1"
+    version: "0.3.1+1"
   typed_data:
     dependency: transitive
     description:

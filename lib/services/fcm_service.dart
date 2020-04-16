@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:fcmcallerapp/entities/user.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 Future<dynamic> _onBackgroundMessage(Map<String, dynamic> message) {
@@ -11,26 +12,30 @@ Future<dynamic> _onBackgroundMessage(Map<String, dynamic> message) {
 
 class FcmService {
 
+
   static const String FCM_SERVER_KEY = 'key=AAAAT5n4t90:APA91bFNmsK2qzPc7S-4qF3Ao3fpEUfeEBRLCntF9SFqCC1Gmwgtd-4_oI4uFiHf2JigcwD80toMLWd_Kq36fk6mGhD5_xvDzjv16xcrwstaICnn-GAh_MZtJmrD3XKBxYMP7HGlBgu3';
 
   final FirebaseMessaging _fcm = FirebaseMessaging();
-
+  BuildContext context;
   Future<String> initialize() async {
-    _fcm.requestNotificationPermissions(IosNotificationSettings(provisional: true));
+    _fcm.requestNotificationPermissions(IosNotificationSettings(provisional: true,alert: true,badge: true));
     _fcm.subscribeToTopic('calls');
 
     _fcm.configure(
       onMessage: (Map<String, dynamic> message) async {
         print("@@@@@ f.FcmService onMessage: $message");
+        Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
       },
 
       onLaunch: (Map<String, dynamic> message) async {
         print("@@@@@ f.FcmService onLaunch: $message");
-      },
+        Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
+        },
 
       onResume: (Map<String, dynamic> message) async {
         print("@@@@@ f.FcmService onResume: $message");
-      },
+        Navigator.pushNamed(context, '/callReceive', arguments:[message['event'],message,message['id']]);
+        },
 
       onBackgroundMessage: _onBackgroundMessage
     );

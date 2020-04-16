@@ -128,6 +128,7 @@ class _MainScreenState extends State<MainScreen> {
 
   @override
   Widget build(BuildContext context) {
+    fcm.context = context;
     return Scaffold(
       appBar: AppBar(title: Text('FCM-CALLER-APP')),
       body: SafeArea(

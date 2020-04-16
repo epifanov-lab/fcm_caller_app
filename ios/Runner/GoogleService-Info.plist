@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CLIENT_ID</key>
+	<string>341885630429-va6eeejg18lo1m84088jfoijvkm94qmh.apps.googleusercontent.com</string>
+	<key>REVERSED_CLIENT_ID</key>
+	<string>com.googleusercontent.apps.341885630429-va6eeejg18lo1m84088jfoijvkm94qmh</string>
+	<key>API_KEY</key>
+	<string>AIzaSyAUtycsa1FmU81cSnnHH8KcviHx9zreMU0</string>
+	<key>GCM_SENDER_ID</key>
+	<string>341885630429</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>lab.fcmcallerapp.ios</string>
+	<key>PROJECT_ID</key>
+	<string>fcm-caller-app</string>
+	<key>STORAGE_BUCKET</key>
+	<string>fcm-caller-app.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:341885630429:ios:df0067645105b7babbe834</string>
+	<key>DATABASE_URL</key>
+	<string>https://fcm-caller-app.firebaseio.com</string>
+</dict>
+</plist>
