@@ -140,16 +140,13 @@ class _TwilioRoomPageState extends State<TwilioRoomPage> {
   List<Widget> _remoteVideos () {
     List<Widget> list = [];
     _participants.values.forEach((item) {
-      list.add(
-          Expanded(
-            child: item,
-          ));
+      list.add(Expanded(child: item));
       });
     return list;
   }
 
   _cancelCall(BuildContext context) {
-    wss.sendMessage('call:send cancel', null);
+    wss.sendMessage('call:send cancel', _roomId);
   }
 
 }
